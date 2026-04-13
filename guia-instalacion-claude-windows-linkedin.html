@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guía de instalación — Claude Code en Windows</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    [id^="sec-"], #variables-de-entorno { scroll-margin-top: 70px; }
+
+    :root {
+      --yellow:       #FFE600;
+      --yellow-dim:   #CCB800;
+      --yellow-soft:  #FFF9C2;
+      --dark:         #323a5d;
+      --dark-2:       #3d4575;
+      --teal:         #009dbd;
+      --teal-soft:    #e0f6fb;
+      --blue-mid:     #4A90D9;
+      --gray-bg:      #f0ede7;
+      --gray-200:     #E8E5DE;
+      --gray-500:     #7a8499;
+      --gray-700:     #4A5568;
+      --card:         #FFFFFF;
+      --card-tonal:   #edeae2;
+      --red-soft:     #fff0ee;
+      --red:          #e84b3a;
+      --green-soft:   #edfdf5;
+      --green:        #27AE60;
+      --font:         'Proxima Nova', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --radius:       12px;
+      --radius-sm:    8px;
+    }
+
+    body {
+      font-family: var(--font);
+      background: linear-gradient(168deg, #f0ede7 0%, #e8e4dc 40%, #eceae4 100%);
+      background-attachment: fixed;
+      color: var(--dark);
+      min-height: 100vh;
+      font-size: 15px;
+      line-height: 1.65;
+    }
+
+    /* ── HEADER ──────────────────────────────────────────────────────────── */
+    .header {
+      background: linear-gradient(135deg, #0b2cc1da 10%, #101117 55%, #40455e 100%);
+      padding: 48px 52px 40px;
+      border-bottom: 4px solid var(--yellow);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(255,230,0,0.04) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .header-eyebrow {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 14px;
+    }
+
+    .header-title {
+      font-size: 30px;
+      font-weight: 800;
+      color: #fff;
+      line-height: 1.2;
+      max-width: 760px;
+      margin-bottom: 12px;
+    }
+
+    .header-sub {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
+      font-weight: 400;
+      max-width: 640px;
+      margin-bottom: 32px;
+    }
+
+    .prereq-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding-top: 20px;
+      border-top: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(255,255,255,0.07);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.85);
+      font-size: 12px;
+      font-weight: 500;
+      padding: 6px 14px;
+      border-radius: 100px;
+      transition: background 0.2s ease, border-color 0.2s ease;
+    }
+
+    .chip:hover {
+      background: rgba(255,255,255,0.12);
+      border-color: rgba(255,255,255,0.22);
+    }
+
+    .chip svg {
+      width: 15px;
+      height: 15px;
+      flex-shrink: 0;
+    }
+
+    /* ── FLOATING GLASS NAV ────────────────────────────────────────────── */
+    .progress-bar-wrap {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      padding: 10px 20px;
+      display: flex;
+      justify-content: center;
+      pointer-events: none;
+      transition: padding 0.3s ease;
+    }
+
+    .progress-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(50, 58, 93, 0.65);
+      backdrop-filter: blur(16px) saturate(1.4);
+      -webkit-backdrop-filter: blur(16px) saturate(1.4);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 100px;
+      padding: 6px 10px;
+      pointer-events: auto;
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.12);
+      transition: background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    }
+
+    .progress-bar-wrap.is-stuck .progress-bar {
+      background: rgba(50, 58, 93, 0.82);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+      border-color: rgba(255, 255, 255, 0.08);
+    }
+
+    .pb-step {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 10px;
+      border-radius: 100px;
+      position: relative;
+      transition: background 0.3s ease;
+    }
+
+    .pb-dot {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+      color: rgba(255, 255, 255, 0.40);
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .pb-label {
+      font-size: 10px;
+      color: rgba(255, 255, 255, 0.30);
+      font-weight: 600;
+      white-space: nowrap;
+      letter-spacing: 0.3px;
+      transition: color 0.3s ease;
+      padding-right: 2px;
+    }
+
+    /* ── Active state ── */
+    .pb-step.active {
+      background: rgba(255, 230, 0, 0.12);
+    }
+
+    .pb-step.active .pb-dot {
+      background: var(--yellow);
+      color: var(--dark);
+      box-shadow: 0 0 10px rgba(255, 230, 0, 0.35);
+    }
+
+    .pb-step.active .pb-label {
+      color: #fff;
+    }
+
+    /* ── Visited state ── */
+    .pb-step.visited .pb-dot {
+      background: rgba(255, 255, 255, 0.20);
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .pb-step.visited .pb-label {
+      color: rgba(255, 255, 255, 0.50);
+    }
+
+    /* ── Link styles ── */
+    a.pb-step {
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
+    }
+
+    a.pb-step:hover {
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    a.pb-step:hover .pb-dot {
+      background: rgba(255, 255, 255, 0.18);
+      color: rgba(255, 255, 255, 0.70);
+    }
+
+    a.pb-step.active:hover {
+      background: rgba(255, 230, 0, 0.18);
+    }
+
+    a.pb-step.active:hover .pb-dot {
+      background: var(--yellow);
+    }
+
+    /* ── MAIN LAYOUT ─────────────────────────────────────────────────────── */
+    .main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── PART HEADER ─────────────────────────────────────────────────────── */
+    .part-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-top: 52px;
+      margin-bottom: 24px;
+    }
+
+    .part-header:first-child {
+      margin-top: 0;
+    }
+
+    .part-badge {
+      background: var(--yellow);
+      color: var(--dark);
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 100px;
+      white-space: nowrap;
+      box-shadow: 0 1px 4px rgba(255,230,0,0.25);
+    }
+
+    .part-badge.red-badge {
+      background: var(--red);
+      color: #fff;
+    }
+
+    .part-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--dark);
+    }
+
+    .part-divider {
+      flex: 1;
+      height: 1px;
+      background: linear-gradient(90deg, var(--gray-200) 0%, transparent 100%);
+    }
+
+    .part-intro {
+      font-size: 14px;
+      color: var(--gray-500);
+      margin-bottom: 24px;
+      line-height: 1.6;
+    }
+
+    /* ── STEP CARD ───────────────────────────────────────────────────────── */
+    .step-card {
+      background: var(--card);
+      border-radius: var(--radius);
+      border: 1px solid var(--gray-200);
+      margin-bottom: 20px;
+      overflow: hidden;
+      box-shadow: 0 1px 2px rgba(50,58,93,0.04), 0 2px 6px rgba(50,58,93,0.03);
+      transition: box-shadow 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .step-card.open {
+      box-shadow: 0 2px 4px rgba(50,58,93,0.06), 0 4px 16px rgba(50,58,93,0.06);
+      border-color: rgba(50,58,93,0.12);
+    }
+
+    .step-head {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 22px 26px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.2s ease;
+    }
+
+    .step-head:hover {
+      background: rgba(50,58,93,0.02);
+    }
+
+    .step-num {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: var(--dark);
+      color: var(--yellow);
+      font-size: 14px;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+      box-shadow: 0 2px 6px rgba(50,58,93,0.20);
+    }
+
+    .step-info {
+      flex: 1;
+    }
+
+    .step-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--dark);
+      line-height: 1.3;
+      margin-bottom: 4px;
+    }
+
+    .step-subtitle {
+      font-size: 13px;
+      color: var(--gray-500);
+      font-weight: 400;
+    }
+
+    .step-toggle {
+      color: var(--gray-500);
+      font-size: 20px;
+      line-height: 1;
+      margin-top: 6px;
+      transition: transform 0.2s ease;
+      flex-shrink: 0;
+    }
+
+    .step-card.open .step-toggle {
+      transform: rotate(180deg);
+    }
+
+    .step-body {
+      display: none;
+      padding: 0 26px 26px 76px;
+      border-top: 1px solid rgba(50,58,93,0.06);
+    }
+
+    .step-card.open .step-body {
+      display: block;
+    }
+
+    .step-body-inner {
+      padding-top: 20px;
+    }
+
+    /* ── CONTENT ELEMENTS ────────────────────────────────────────────────── */
+    .step-body p {
+      margin-bottom: 14px;
+      color: var(--gray-700);
+      font-size: 14px;
+    }
+
+    .step-body p:last-child {
+      margin-bottom: 0;
+    }
+
+    .step-body ul, .step-body ol {
+      margin: 0 0 16px 0;
+      padding-left: 20px;
+    }
+
+    .step-body li {
+      margin-bottom: 8px;
+      color: var(--gray-700);
+      font-size: 14px;
+      line-height: 1.55;
+    }
+
+    .step-body strong {
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    /* inline code */
+    code {
+      font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace;
+      font-size: 12.5px;
+      background: rgba(237,234,226,0.65);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      color: var(--dark);
+      padding: 2px 7px;
+      border-radius: 5px;
+      border: 1px solid rgba(50,58,93,0.08);
+    }
+
+    /* code block */
+    .code-block {
+      background: #1e2235;
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+      margin: 14px 0;
+      overflow-x: auto;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: inset 0 1px 0 rgba(255,230,0,0.08);
+    }
+
+    .code-block pre {
+      font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace;
+      font-size: 13px;
+      color: #c9d1e8;
+      white-space: pre;
+      line-height: 1.8;
+      margin: 0;
+    }
+
+    .code-block .comment { color: #6a7490; }
+    .code-block .cmd     { color: #FFE600; }
+
+    .code-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #6a7490;
+      margin-bottom: 10px;
+    }
+
+    /* callouts */
+    .callout {
+      display: flex;
+      gap: 12px;
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin: 14px 0;
+      font-size: 13px;
+      line-height: 1.55;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+    }
+
+    .callout-icon {
+      font-size: 17px;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .callout-body { color: var(--gray-700); }
+
+    .callout-body strong {
+      font-weight: 700;
+      color: var(--dark);
+    }
+
+    .callout-body strong:first-child {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 3px;
+    }
+
+    .callout.tip     { background: rgba(255,249,194,0.7); border-left: 3px solid var(--yellow-dim); }
+    .callout.warning { background: rgba(255,243,232,0.7); border-left: 3px solid #f0a050; }
+    .callout.info    { background: rgba(224,246,251,0.7); border-left: 3px solid var(--teal); }
+    .callout.success { background: rgba(237,253,245,0.7); border-left: 3px solid var(--green); }
+
+    /* numbered sub-steps */
+    .substeps {
+      counter-reset: substep;
+      list-style: none;
+      padding: 0;
+      margin: 14px 0;
+    }
+
+    .substeps li {
+      counter-increment: substep;
+      position: relative;
+      padding-left: 34px;
+      margin-bottom: 14px;
+      color: var(--gray-700);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .substeps li::before {
+      content: counter(substep);
+      position: absolute;
+      left: 0;
+      top: 1px;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--teal);
+      color: #fff;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 1px 4px rgba(0,157,189,0.25);
+    }
+
+    .substeps li strong { color: var(--dark); font-weight: 600; }
+
+    /* ── VERIFY BOX ──────────────────────────────────────────────────────── */
+    .verify-box {
+      background: rgba(237,253,245,0.7);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(178,223,199,0.6);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      margin-top: 16px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+    }
+
+    .verify-box .v-icon { font-size: 18px; flex-shrink: 0; }
+
+    .verify-box .v-body { font-size: 13px; color: #1a6b43; line-height: 1.5; }
+
+    .verify-box .v-body strong {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 4px;
+      color: #155436;
+    }
+
+    /* ── TROUBLESHOOTING ─────────────────────────────────────────────────── */
+    .trouble-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card);
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid rgba(50,58,93,0.10);
+      font-size: 13px;
+      box-shadow: 0 1px 2px rgba(50,58,93,0.04), 0 4px 12px rgba(50,58,93,0.04);
+    }
+
+    .trouble-table thead tr {
+      background: linear-gradient(135deg, #2a3150 0%, #3d4575 100%);
+      color: var(--yellow);
+    }
+
+    .trouble-table thead th {
+      text-align: left;
+      padding: 13px 18px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .trouble-table tbody tr {
+      border-bottom: 1px solid var(--gray-200);
+    }
+
+    .trouble-table tbody tr:last-child { border-bottom: none; }
+
+    .trouble-table tbody tr:nth-child(even) { background: #faf9f6; }
+
+    .trouble-table td {
+      padding: 13px 18px;
+      vertical-align: top;
+      line-height: 1.5;
+      color: var(--gray-700);
+    }
+
+    .trouble-table td:first-child {
+      color: var(--red);
+      font-weight: 600;
+      font-family: 'SFMono-Regular', 'Consolas', monospace;
+      font-size: 12px;
+      min-width: 200px;
+    }
+
+    .trouble-table td:nth-child(2) { color: var(--gray-500); }
+
+    /* ── QUICK REFERENCE ─────────────────────────────────────────────────── */
+    .quick-ref {
+      margin-top: 52px;
+      background: linear-gradient(160deg, #1e2235 0%, #252a42 100%);
+      border-radius: var(--radius);
+      padding: 30px 32px;
+      border: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 0 4px 16px rgba(30,34,53,0.3);
+    }
+
+    .quick-ref-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--yellow);
+      margin-bottom: 20px;
+    }
+
+    .quick-ref pre {
+      font-family: 'SFMono-Regular', 'Consolas', 'Liberation Mono', monospace;
+      font-size: 13px;
+      color: #c9d1e8;
+      white-space: pre;
+      line-height: 2;
+      overflow-x: auto;
+    }
+
+    .quick-ref pre .comment { color: #6a7490; }
+    .quick-ref pre .cmd     { color: #FFE600; }
+    .quick-ref pre .sep     { color: #3d4575; }
+
+    /* ── AUTHOR CARD ─────────────────────────────────────────────────────── */
+    .author-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 20px;
+      background: linear-gradient(135deg, rgb(217 217 217 / 68%) 15%, rgba(150, 150, 150, 0.82) 100%);
+      backdrop-filter: blur(12px) saturate(1.2);
+      -webkit-backdrop-filter: blur(12px) saturate(1.2);
+      border: 1px solid rgba(255,255,255,0.35);
+      border-radius: var(--radius);
+      padding: 24px 26px;
+      margin-bottom: 28px;
+      box-shadow: 0 2px 12px rgba(50,58,93,0.06), inset 0 1px 0 rgba(255,255,255,0.5);
+    }
+
+    .author-avatar {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      overflow: hidden;
+      flex-shrink: 0;
+      border: 2px solid rgba(255,255,255,0.6);
+      box-shadow: 0 3px 12px rgba(50,58,93,0.15);
+    }
+
+    .author-avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 15%;
+      display: block;
+    }
+
+    .author-info {
+      flex: 1;
+      font-size: 13px;
+      color: var(--gray-700);
+      line-height: 1.55;
+    }
+
+    .author-name {
+      font-weight: 800;
+      color: var(--dark);
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .author-bio {
+      margin-bottom: 8px;
+    }
+
+    .author-bio .hl {
+      color: var(--dark);
+      font-weight: 600;
+    }
+
+    .author-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+      font-size: 12px;
+      font-weight: 600;
+      color: #0A66C2;
+    }
+
+    .author-link:hover {
+      color: #004182;
+    }
+
+    .author-link svg {
+      width: 14px;
+      height: 14px;
+      flex-shrink: 0;
+    }
+
+    /* ── FOOTER ──────────────────────────────────────────────────────────── */
+    .footer {
+      text-align: center;
+      padding: 32px 24px 28px;
+      font-size: 12px;
+      color: var(--gray-500);
+      border-top: 1px solid rgba(50,58,93,0.08);
+      margin-top: 60px;
+      letter-spacing: 0.2px;
+      line-height: 1.7;
+    }
+
+    .footer-credit {
+      margin-top: 8px;
+      font-size: 13px;
+      color: var(--gray-700);
+      font-weight: 500;
+    }
+
+    .footer-credit a {
+      color: #0A66C2;
+      font-weight: 600;
+    }
+
+    .footer-credit a:hover {
+      color: #004182;
+    }
+
+    /* ── WIN SEARCH MOCKUP ────────────────────────────────────────────────── */
+    .win-search {
+      max-width: 420px;
+      margin: 20px auto 28px;
+      border-radius: 12px;
+      overflow: hidden;
+      background: #2b2b2b;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+      font-family: 'Segoe UI', 'Inter', sans-serif;
+      color: #fff;
+      font-size: 13px;
+    }
+
+    .win-search-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      background: #3a3a3a;
+      border-bottom: 1px solid #444;
+    }
+
+    .win-search-bar svg { flex-shrink: 0; color: #aaa; }
+
+    .win-search-bar span {
+      color: #ccc;
+      font-size: 13px;
+    }
+
+    .win-search-tabs {
+      display: flex;
+      gap: 0;
+      padding: 0 8px;
+      border-bottom: 1px solid #444;
+      background: #2b2b2b;
+    }
+
+    .win-search-tab {
+      padding: 8px 14px;
+      font-size: 11px;
+      font-weight: 500;
+      color: #999;
+      border-bottom: 2px solid transparent;
+    }
+
+    .win-search-tab.active {
+      color: #60cdff;
+      border-bottom-color: #60cdff;
+    }
+
+    .win-search-label {
+      padding: 12px 16px 6px;
+      font-size: 11px;
+      font-weight: 600;
+      color: #999;
+    }
+
+    .win-search-result {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 16px;
+      cursor: default;
+      border-radius: 6px;
+      margin: 2px 8px;
+      transition: background 0.1s;
+    }
+
+    .win-search-result:hover { background: #3a3a3a; }
+
+    .win-search-result.highlighted {
+      background: #3a3a3a;
+      border-left: 3px solid #60cdff;
+      padding-left: 13px;
+    }
+
+    .win-search-icon {
+      width: 28px;
+      height: 28px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+
+    .win-search-icon.env { background: #0078d4; }
+    .win-search-icon.sys { background: #444; }
+
+    .win-search-text { line-height: 1.35; }
+
+    .win-search-text .title {
+      font-size: 13px;
+      font-weight: 500;
+      color: #e8e8e8;
+    }
+
+    .win-search-text .subtitle {
+      font-size: 11px;
+      color: #888;
+    }
+
+    .win-search-result.highlighted .win-search-text .title {
+      color: #fff;
+      font-weight: 600;
+    }
+
+    .win-search-pointer {
+      text-align: center;
+      padding: 6px 16px 14px;
+    }
+
+    .win-search-pointer span {
+      display: inline-block;
+      background: #60cdff;
+      color: #1a1a1a;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 100px;
+    }
+
+    /* ── LINKS ───────────────────────────────────────────────────────────── */
+    a { color: var(--teal); font-weight: 500; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── RESPONSIVE ──────────────────────────────────────────────────────── */
+    @media (max-width: 640px) {
+      .header { padding: 32px 20px 28px; }
+      .header-title { font-size: 22px; }
+      .progress-bar-wrap { padding: 8px 10px; }
+      .progress-bar { gap: 2px; padding: 4px 6px; }
+      .pb-label { display: none; }
+      .pb-step { padding: 4px 5px; gap: 0; }
+      .pb-dot { width: 22px; height: 22px; font-size: 10px; }
+      .main { padding: 32px 16px 60px; }
+      .step-head { padding: 16px 18px; }
+      .step-body { padding: 0 18px 20px 18px; }
+      .step-num { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══ HEADER ══════════════════════════════════════════════════════════════ -->
+<header class="header">
+  <div class="header-eyebrow">Guía de instalación &middot; Windows sin permisos de administrador</div>
+  <h1 class="header-title">Cómo instalar Claude Code en una computadora corporativa con Windows</h1>
+  <p class="header-sub">Seguí esta guía paso a paso. No necesitás permisos de administrador ni experiencia técnica previa.</p>
+  <div class="prereq-chips">
+    <div class="chip">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M4 6l4 3 4-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Acceso a internet
+    </div>
+    <div class="chip">
+      <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 5h6M5 8h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      Windows 10 / 11
+    </div>
+    <div class="chip">
+      <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      ~20 minutos
+    </div>
+    <div class="chip">
+      <svg viewBox="0 0 16 16" fill="none"><path d="M8 1l1.5 3 3.5.5-2.5 2.5.5 3.5L8 9l-3 1.5.5-3.5L3 4.5l3.5-.5L8 1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+      Sin experiencia técnica
+    </div>
+  </div>
+</header>
+
+<!-- ══ PROGRESS NAV ═════════════════════════════════════════════════════════ -->
+<nav class="progress-bar-wrap">
+  <div class="progress-bar">
+    <a href="#sec-prerequisitos" class="pb-step">
+      <div class="pb-dot">1</div>
+      <span class="pb-label">Prerequisitos</span>
+    </a>
+    <a href="#sec-nodejs" class="pb-step">
+      <div class="pb-dot">2</div>
+      <span class="pb-label">Node.js</span>
+    </a>
+    <a href="#sec-gitbash" class="pb-step">
+      <div class="pb-dot">3</div>
+      <span class="pb-label">Git Bash</span>
+    </a>
+    <a href="#sec-claudecode" class="pb-step">
+      <div class="pb-dot">4</div>
+      <span class="pb-label">Claude Code</span>
+    </a>
+    <a href="#sec-primeruso" class="pb-step">
+      <div class="pb-dot">5</div>
+      <span class="pb-label">Primer uso</span>
+    </a>
+    <a href="#sec-problemas" class="pb-step">
+      <div class="pb-dot">⚠</div>
+      <span class="pb-label">Problemas</span>
+    </a>
+    <a href="#variables-de-entorno" class="pb-step">
+      <div class="pb-dot">📋</div>
+      <span class="pb-label">Variables</span>
+    </a>
+  </div>
+</nav>
+
+<!-- ══ MAIN ═════════════════════════════════════════════════════════════════ -->
+<main class="main">
+
+  <!-- ── AUTOR ─────────────────────────────────────────────────────────── -->
+  <div class="author-card">
+    <div class="author-avatar">
+      <img src="data:image/jpeg;base64,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" alt="Carlos Patricio Gonzalez Guerrico">
+    </div>
+    <div class="author-info">
+      <div class="author-name">Carlos Patricio Gonzalez Guerrico</div>
+      <div class="author-bio">
+        Analista de Datos Senior e Ingeniero de <span class="hl">Automatización</span> con +4 años en fintech e ingeniería de datos. Especializado en <span class="hl">SQL</span> (BigQuery, Redshift), <span class="hl">Python</span>, <span class="hl">JavaScript</span> y orquestación de flujos (n8n, Airflow, AWS). Construyo pipelines automatizados, dashboards de BI y herramientas internas potenciadas con <span class="hl">AI</span>. <span class="hl">Ingeniero Industrial</span> con base en optimización de procesos (DMAIC), análisis de cohortes, retención, KPIs (MAUs, TPV) y toma de decisiones data-driven en entornos de alto crecimiento.
+      </div>
+      <a href="https://www.linkedin.com/in/cpatriciogg" target="_blank" class="author-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        linkedin.com/in/cpatriciogg
+      </a>
+    </div>
+  </div>
+
+  <!-- ── CALLOUT DOCUMENTACIÓN OFICIAL ─────────────────────────────────── -->
+  <div class="callout info" style="margin-bottom:32px; font-size:14px;">
+    <span class="callout-icon">📖</span>
+    <div class="callout-body">
+      <strong>¿Tenés algún problema? Consultá la documentación oficial de Anthropic</strong>
+      Anthropic tiene una guía oficial de resolución de problemas con soluciones para los errores más comunes de instalación.
+      <br style="margin-bottom:6px;">
+      <a href="https://code.claude.com/docs/es/troubleshooting" target="_blank" style="display:inline-flex; align-items:center; gap:4px; margin-top:8px; font-weight:600;">
+        code.claude.com/docs/es/troubleshooting
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="margin-top:1px;"><path d="M2.5 9.5L9.5 2.5M9.5 2.5H5M9.5 2.5V7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── ANTES DE EMPEZAR ───────────────────────────────────────────────── -->
+  <div class="part-header" id="sec-prerequisitos">
+    <span class="part-badge">Antes de empezar</span>
+    <span class="part-title">Descargá estas herramientas primero</span>
+    <div class="part-divider"></div>
+  </div>
+
+  <div class="step-card open">
+    <div class="step-head" onclick="toggleStep(this)">
+      <div class="step-num" style="background:var(--teal); color:#fff; font-size:18px;">✓</div>
+      <div class="step-info">
+        <div class="step-title">Herramientas necesarias</div>
+        <div class="step-subtitle">Tres programas gratuitos que necesitás tener instalados antes de empezar</div>
+      </div>
+      <div class="step-toggle">▾</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <p>Instalá estas tres herramientas antes de continuar. Hacé clic en cada enlace para ir a la página oficial de descarga:</p>
+        <ul>
+          <li>
+            <strong>Git Bash</strong> — <a href="https://git-scm.com/download/win" target="_blank">git-scm.com/download/win</a><br>
+            Es la consola de comandos que vamos a usar durante toda la instalación. Seguí
+            <a href="https://www.youtube.com/watch?v=CaHTlfHWd8U" target="_blank">este video de configuración</a>
+            para asegurarte de que quede bien configurado.
+          </li>
+          <li>
+            <strong>Visual Studio Code (VSCode)</strong> — <a href="https://code.visualstudio.com/" target="_blank">code.visualstudio.com</a><br>
+            Editor de texto y código. Es el programa donde vas a usar Claude Code una vez instalado.
+          </li>
+          <li>
+            <strong>Python</strong> — <a href="https://www.python.org/downloads/" target="_blank">python.org/downloads</a><br>
+            Descargá la última versión. <strong>Importante:</strong> durante la instalación, marcá la casilla
+            <em>"Add Python to PATH"</em> antes de hacer clic en "Install Now".
+          </li>
+        </ul>
+        <div class="callout tip">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <strong>¿Nada de esto requiere permisos de administrador?</strong>
+            VSCode y Git Bash tienen opciones de instalación "solo para el usuario actual" que no piden contraseña.
+            Python también funciona sin admin si elegís la opción de instalación por usuario.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PARTE 1 — NODE.JS ───────────────────────────────────────────────── -->
+  <div class="part-header" id="sec-nodejs">
+    <span class="part-badge">Parte 1</span>
+    <span class="part-title">Instalar Node.js sin permisos de administrador</span>
+    <div class="part-divider"></div>
+  </div>
+
+  <p class="part-intro">
+    Node.js es el motor que necesita Claude Code para funcionar. Como no podés usar el instalador normal,
+    vamos a usar la versión portable: un ZIP que no requiere instalación.
+  </p>
+
+  <!-- Paso 1 -->
+  <div class="step-card open">
+    <div class="step-head" onclick="toggleStep(this)">
+      <div class="step-num">1</div>
+      <div class="step-info">
+        <div class="step-title">Descargar Node.js en formato ZIP</div>
+        <div class="step-subtitle">Buscá el archivo .zip — NO el instalador .msi</div>
+      </div>
+      <div class="step-toggle">▾</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <ol class="substeps">
+          <li>Abrí tu navegador y andá a <a href="https://nodejs.org/en/download" target="_blank">nodejs.org/en/download</a></li>
+          <li>Buscá la sección de descargas para <strong>Windows</strong></li>
+          <li>
+            Descargá el archivo con extensión <code>.zip</code>. El nombre va a ser algo como:
+            <div class="code-block" style="margin-top:10px;">
+              <pre><span class="cmd">node-v22.x.x-win-x64.zip</span></pre>
+            </div>
+          </li>
+        </ol>
+        <div class="callout warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <strong>No descargues el .msi</strong>
+            Si ves dos opciones para Windows, elegí siempre el <code>.zip</code>.
+            El instalador <code>.msi</code> va a pedirte contraseña de administrador y no va a funcionar.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paso 2 -->
+  <div class="step-card open">
+    <div class="step-head" onclick="toggleStep(this)">
+      <div class="step-num">2</div>
+      <div class="step-info">
+        <div class="step-title">Extraer el ZIP en tu carpeta de usuario</div>
+        <div class="step-subtitle">Creá la estructura de carpetas y descomprimí el archivo</div>
+      </div>
+      <div class="step-toggle">▾</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <ol class="substeps">
+          <li>Abrí el <strong>Explorador de Windows</strong></li>
+          <li>Navegá a <code>C:\Users\TU_USUARIO\</code> (reemplazá <code>TU_USUARIO</code> por tu nombre de usuario real)</li>
+          <li>Creá una carpeta nueva llamada <code>tools</code></li>
+          <li>Dentro de <code>tools</code>, creá otra carpeta llamada <code>nodejs</code></li>
+          <li>Extraé <strong>todo el contenido</strong> del ZIP dentro de <code>C:\Users\TU_USUARIO\tools\nodejs</code></li>
+        </ol>
+        <div class="verify-box">
+          <span class="v-icon">✅</span>
+          <div class="v-body">
+            <strong>¿Cómo saber que lo hiciste bien?</strong>
+            Dentro de la carpeta <code>nodejs</code> deberías ver el archivo <code>node.exe</code>. Si lo ves, vas bien.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paso 3 -->
+  <div class="step-card open">
+    <div class="step-head" onclick="toggleStep(this)">
+      <div class="step-num">3</div>
+      <div class="step-info">
+        <div class="step-title">Agregar Node.js al PATH de tu usuario</div>
+        <div class="step-subtitle">El PATH es la lista de rutas que Windows consulta cuando escribís un comando</div>
+      </div>
+      <div class="step-toggle">▾</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <div class="callout info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-body">
+            <strong>¿Qué es el PATH?</strong>
+            Cuando escribís un comando como <code>node</code> en la consola, Windows busca en una lista de
+            carpetas llamada PATH. Si Node.js no está ahí, el sistema no lo va a encontrar.
+            Vamos a editarlo <strong>solo para tu cuenta</strong> — esto no requiere permisos de administrador.
+            También podés seguir <a href="https://www.youtube.com/watch?v=CaHTlfHWd8U" target="_blank">este video de referencia</a>.
+          </div>
+        </div>
+        <ol class="substeps">
+          <li>Abrí el <strong>buscador de Windows</strong> (la lupa en la barra de tareas o presioná la tecla <strong>Windows</strong>)</li>
+          <li>Escribí <strong>"variables de entorno"</strong> y seleccioná la opción <strong>"Editar las variables de entorno de esta cuenta"</strong>
+            <div class="callout warning" style="margin-top:10px; margin-bottom:0;">
+              <span class="callout-icon">⚠️</span>
+              <div class="callout-body">
+                <strong>Ojo — hay dos opciones parecidas</strong>
+                Elegí la que dice <strong>"de esta cuenta"</strong>, NO la que dice "del sistema".
+                La opción del sistema requiere permisos de administrador.
+              </div>
+            </div>
+          </li>
+          <li>Se abre una ventana con dos secciones. Trabajá <strong>únicamente en la sección de arriba</strong> que dice <em>"Variables de usuario"</em>. Nunca toques la sección de abajo ("Variables del sistema").</li>
+          <li>Buscá la variable llamada <code>Path</code> en la sección de arriba y hacé <strong>doble clic</strong> sobre ella</li>
+          <li>Hacé clic en <strong>"Nuevo"</strong> y escribí la ruta completa:
+            <div class="code-block" style="margin-top:10px;">
+              <pre><span class="cmd">C:\Users\TU_USUARIO\tools\nodejs</span></pre>
+            </div>
+          </li>
+          <li>Hacé clic en <strong>Aceptar</strong> en todas las ventanas para guardar</li>
+        </ol>
+        <div class="verify-box">
+          <span class="v-icon">✅</span>
+          <div class="v-body">
+            <strong>Verificación</strong>
+            Cerrá PowerShell si lo tenías abierto, abrilo de nuevo y escribí:
+            <div class="code-block" style="margin-top:8px;">
+              <pre><span class="cmd">node --version</span></pre>
+            </div>
+            Si ves un número de versión como <code>v22.x.x</code>, el paso fue exitoso.
+          </div>
+        </div>
+        <div class="callout info" style="margin-top:16px;">
+          <span class="callout-icon">📋</span>
+          <div class="callout-body">
+            Si querés aprovechar y configurar todas las variables de entorno de una sola vez,
+            <a href="#variables-de-entorno">consultá el cuadro completo de variables y rutas</a>
+            al final de esta guía.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PARTE 2 — GIT BASH ──────────────────────────────────────────────── -->
+  <div class="part-header" id="sec-gitbash">
+    <span class="part-badge">Parte 2</span>
+    <span class="part-title">Configurar Git Bash</span>
+    <div class="part-divider"></div>
+  </div>
+
+  <p class="part-intro">
+    Git Bash es la consola que vamos a usar para instalar Claude. Necesita saber dónde encontrar Node.js.
+  </p>
+
+  <!-- Paso 4 -->
+  <div class="step-card open">
+    <div class="step-head" onclick="toggleStep(this)">
+      <div class="step-num">4</div>
+      <div class="step-info">
+        <div class="step-title">Abrir Git Bash y configurar el PATH</div>
+        <div class="step-subtitle">Decile a Git Bash dónde encontrar Node.js</div>
+      </div>
+      <div class="step-toggle">▾</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <ol class="substeps">
+          <li>Buscá <strong>Git Bash</strong> en el menú inicio y abrilo</li>
+          <li>
+            Pegá este comando (reemplazá <code>TU_USUARIO</code> por tu usuario real antes de pegarlo):
+            <div class="code-block" style="margin-top:10px;">
+              <div class="code-label">Comando 1 de 2 — ejecutar primero</div>
+              <pre><span class="cmd">printf 'export PATH="/c/Users/TU_USUARIO/tools/nodejs:$PATH"\n' &gt; ~/.bashrc</span></pre>
+            </div>
+          </li>
+          <li>
+            Presioná <strong>Enter</strong>, esperá que termine, y recién entonces pegá este segundo:
+            <div class="code-block" style="margin-top:10px;">
+              <div class="code-label">Comando 2 de 2 — ejecutar después</div>
+              <pre><span class="cmd">source ~/.bashrc</span></pre>
+            </div>
+          </li>
+          <li>
+            Verificá que funcionó:
+            <div class="code-block" style="margin-top:10px;">
+              <pre><span class="cmd">node --version</span>
+<span class="cmd">npm --version</span></pre>
+            </div>
+            Ambos deberían mostrar números de versión.
+          </li>
+        </ol>
+        <div class="callout warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <strong>Pegá los comandos de a uno</strong>
+            En Git Bash, si pegás varios comandos a la vez, los puede interpretar como uno solo y fallar.
+            Pegá uno, presioná Enter, esperá que termine, y recién entonces pegá el siguiente.
+          </div>
+        </div>
+        <div class="callout tip">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <strong>Si <code>source ~/.bashrc</code> falla con "command not found":</strong>
+            El archivo puede haber quedado con formato incorrecto. Volvé a ejecutar el primer comando
+            con <code>printf</code> (no uses <code>echo</code>) y luego intentá el <code>source</code> de nuevo.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PARTE 3 — CLAUDE CODE ───────────────────────────────────────────── -->
+  <div class="part-header" id="sec-claudecode">
+    <span class="part-badge">Parte 3</span>
+    <span class="part-title">Instalar Claude Code</span>
+    <div class="part-divider"></div>
+  </div>
+
+  <!-- Paso 5 -->
+  <div class="step-card open">
+    <div class="step-head" onclick="toggleStep(this)">
+      <div class="step-num">5</div>
+      <div class="step-info">
+        <div class="step-title">Instalar Claude Code con npm</div>
+        <div class="step-subtitle">Un solo comando — puede tardar varios minutos</div>
+      </div>
+      <div class="step-toggle">▾</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <p>En Git Bash, ejecutá este comando:</p>
+        <div class="code-block">
+          <pre><span class="cmd">npm install -g @anthropic-ai/claude-code</span></pre>
+        </div>
+        <div class="callout info">
+          <span class="callout-icon">ℹ️</span>
+          <div class="callout-body">
+            Esto puede tardar <strong>varios minutos</strong> dependiendo de tu conexión a internet.
+            Verás texto desfilando en la pantalla — es normal. Dejalo terminar sin interrumpirlo.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paso 6 -->
+  <div class="step-card open">
+    <div class="step-head" onclick="toggleStep(this)">
+      <div class="step-num">6</div>
+      <div class="step-info">
+        <div class="step-title">Agregar Claude al PATH de tu usuario en Windows</div>
+        <div class="step-subtitle">Decile a Windows dónde encontrar el comando <code>claude</code></div>
+      </div>
+      <div class="step-toggle">▾</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <ol class="substeps">
+          <li>Abrí el <strong>buscador de Windows</strong> y buscá <strong>"Editar las variables de entorno de esta cuenta"</strong> (igual que en el Paso 3)</li>
+          <li>Hacé doble clic en la variable <code>Path</code> de la sección de arriba (<em>"Variables de usuario"</em>)</li>
+          <li>Hacé clic en <strong>"Nuevo"</strong> y agregá esta ruta:
+            <div class="code-block" style="margin-top:8px;">
+              <pre><span class="cmd">C:\Users\TU_USUARIO\AppData\Roaming\npm</span></pre>
+            </div>
+            <span style="font-size:12px; color:var(--gray-500);">Esta es la carpeta donde npm guarda los programas que instalás con <code>npm install -g</code></span>
+          </li>
+          <li>Hacé clic en <strong>"Nuevo"</strong> otra vez y agregá también:
+            <div class="code-block" style="margin-top:8px;">
+              <pre><span class="cmd">C:\Users\TU_USUARIO\.claude\bin</span></pre>
+            </div>
+            <span style="font-size:12px; color:var(--gray-500);">Si esta carpeta no existe todavía, agregala igual — se va a crear durante la instalación.</span>
+          </li>
+          <li>Hacé clic en <strong>Aceptar</strong> en todas las ventanas</li>
+        </ol>
+        <div class="callout info" style="margin-top:16px;">
+          <span class="callout-icon">📋</span>
+          <div class="callout-body">
+            Si querés aprovechar y configurar todas las variables de entorno de una sola vez,
+            <a href="#variables-de-entorno">consultá el cuadro completo de variables y rutas</a>
+            al final de esta guía.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paso Extra — PowerShell (variables de entorno vía terminal) -->
+  <div class="step-card open">
+    <div class="step-head" onclick="toggleStep(this)">
+      <div class="step-num" style="background:#5c2d91; color:#fff; font-size:11px; font-weight:800; letter-spacing:-0.5px;">PS</div>
+      <div class="step-info">
+        <div class="step-title">Paso extra para Windows: configurar variables de entorno desde PowerShell</div>
+        <div class="step-subtitle">Alternativa al método manual — ejecutá estos comandos en PowerShell, de a uno</div>
+      </div>
+      <div class="step-toggle">▾</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <p>
+          Si tuviste problemas con el método manual o preferís hacerlo todo desde la terminal,
+          podés usar estos comandos de PowerShell. Abrí <strong>PowerShell</strong> (no Git Bash)
+          y pegá cada línea de a una.
+        </p>
+
+        <div class="callout warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <strong>Ejecutá de a uno</strong>
+            Copiá y pegá cada comando por separado. Esperá que cada uno termine antes de continuar con el siguiente.
+          </div>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label">1 — Instalar Git (si todavía no lo tenés)</div>
+          <pre><span class="cmd">winget install --id Git.Git -e --source winget</span></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label">2 — Configurar la ruta de Git Bash para Claude (permanente)</div>
+          <pre><span class="cmd">setx CLAUDE_CODE_GIT_BASH_PATH "C:\Users\$ENV:USERNAME\AppData\Local\Programs\Git\bin"</span></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label">3 — Configurar la ruta de Git Bash para Claude (sesión actual)</div>
+          <pre><span class="cmd">$env:CLAUDE_CODE_GIT_BASH_PATH = "C:\Users\$ENV:USERNAME\AppData\Local\Programs\Git\bin"</span></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label">4 — Instalar Claude Code vía script oficial de Anthropic</div>
+          <pre><span class="cmd">irm https://claude.ai/install.ps1 | iex</span></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label">5 — Agregar la carpeta .claude al PATH (permanente)</div>
+          <pre><span class="cmd">setx PATH "$env:PATH;C:\Users\$ENV:USERNAME\.claude"</span></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label">6 — Agregar la carpeta .claude al PATH (sesión actual)</div>
+          <pre><span class="cmd">$env:PATH = "$env:PATH;C:\Users\$ENV:USERNAME\.claude"</span></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label">7 — Agregar la carpeta .local\bin al PATH (permanente)</div>
+          <pre><span class="cmd">setx PATH "$env:PATH;C:\Users\$ENV:USERNAME\.local\bin"</span></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label">8 — Agregar la carpeta .local\bin al PATH (sesión actual)</div>
+          <pre><span class="cmd">$env:PATH = "$env:PATH;C:\Users\$ENV:USERNAME\.local\bin"</span></pre>
+        </div>
+
+        <div class="verify-box">
+          <span class="v-icon">✅</span>
+          <div class="v-body">
+            <strong>Cerrá y volvé a abrir la terminal</strong>
+            Una vez ejecutados todos los comandos, cerrá PowerShell y volvé a abrirlo para que los cambios de PATH tomen efecto.
+          </div>
+        </div>
+
+        <div class="callout tip">
+          <span class="callout-icon">💡</span>
+          <div class="callout-body">
+            <strong>¿Cuál es la diferencia entre los comandos "permanente" y "sesión actual"?</strong>
+            Los comandos con <code>setx</code> guardan el cambio de forma permanente (para futuras sesiones).
+            Los comandos con <code>$env:</code> lo aplican solo mientras la ventana de PowerShell está abierta.
+            Ejecutar ambos garantiza que funcione tanto ahora como la próxima vez que abras la terminal.
+          </div>
+        </div>
+        <div class="callout info" style="margin-top:16px;">
+          <span class="callout-icon">📋</span>
+          <div class="callout-body">
+            Si querés ver el listado completo de todas las variables y rutas que se configuran en este paso,
+            <a href="#variables-de-entorno">consultá el cuadro resumen de variables de entorno</a>
+            al final de esta guía.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paso 7 -->
+  <div class="step-card open">
+    <div class="step-head" onclick="toggleStep(this)">
+      <div class="step-num">7</div>
+      <div class="step-info">
+        <div class="step-title">Agregar el PATH de npm en Git Bash también</div>
+        <div class="step-subtitle">Para que la consola encuentre el comando <code>claude</code></div>
+      </div>
+      <div class="step-toggle">▾</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <p>En Git Bash, ejecutá estos dos comandos (de a uno):</p>
+        <div class="code-block">
+          <pre><span class="cmd">echo "export PATH=\"$(npm config get prefix)/bin:\$PATH\"" &gt;&gt; ~/.bashrc</span>
+<span class="cmd">source ~/.bashrc</span></pre>
+        </div>
+        <div class="callout warning">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            Recordá ejecutar los dos comandos <strong>de a uno</strong>, esperando que cada uno termine antes de ingresar el siguiente.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Paso 8 -->
+  <div class="step-card open">
+    <div class="step-head" onclick="toggleStep(this)">
+      <div class="step-num">8</div>
+      <div class="step-info">
+        <div class="step-title">Verificar que todo funciona</div>
+        <div class="step-subtitle">Si ves la versión, la instalación fue exitosa</div>
+      </div>
+      <div class="step-toggle">▾</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <ol class="substeps">
+          <li>Cerrá Git Bash</li>
+          <li>Volvé a abrirlo</li>
+          <li>
+            Escribí:
+            <div class="code-block" style="margin-top:8px;">
+              <pre><span class="cmd">claude --version</span></pre>
+            </div>
+          </li>
+        </ol>
+        <div class="verify-box">
+          <span class="v-icon">🎉</span>
+          <div class="v-body">
+            <strong>¡Si ves un número de versión, la instalación fue exitosa!</strong>
+            Ya podés pasar al último paso para iniciar sesión.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── PARTE 4 — PRIMER USO ────────────────────────────────────────────── -->
+  <div class="part-header" id="sec-primeruso">
+    <span class="part-badge">Parte 4</span>
+    <span class="part-title">Usar Claude Code por primera vez</span>
+    <div class="part-divider"></div>
+  </div>
+
+  <!-- Paso 9 -->
+  <div class="step-card open">
+    <div class="step-head" onclick="toggleStep(this)">
+      <div class="step-num">9</div>
+      <div class="step-info">
+        <div class="step-title">Iniciar sesión</div>
+        <div class="step-subtitle">La primera vez te va a pedir que te autentiques con tu cuenta de Anthropic</div>
+      </div>
+      <div class="step-toggle">▾</div>
+    </div>
+    <div class="step-body">
+      <div class="step-body-inner">
+        <p>En Git Bash, escribí simplemente:</p>
+        <div class="code-block">
+          <pre><span class="cmd">claude</span></pre>
+        </div>
+        <p>
+          La primera vez que lo ejecutés, te va a pedir que inicies sesión con tu cuenta de Anthropic
+          (la misma que usás en <a href="https://claude.ai" target="_blank">claude.ai</a>).
+          Seguí las instrucciones en pantalla.
+        </p>
+        <div class="callout success">
+          <span class="callout-icon">✅</span>
+          <div class="callout-body">
+            <strong>¡Listo!</strong>
+            Una vez que iniciaste sesión, Claude Code está funcionando. Podés abrirlo desde
+            Git Bash o desde la extensión de VSCode.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SOLUCIÓN DE PROBLEMAS ───────────────────────────────────────────── -->
+  <div class="part-header" id="sec-problemas" style="margin-top:52px;">
+    <span class="part-badge red-badge">Problemas frecuentes</span>
+    <span class="part-title">¿Algo no funciona?</span>
+    <div class="part-divider"></div>
+  </div>
+
+  <table class="trouble-table">
+    <thead>
+      <tr>
+        <th>Mensaje de error</th>
+        <th>Causa probable</th>
+        <th>Solución</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>node no se reconoce en PowerShell</td>
+        <td>PATH no fue actualizado</td>
+        <td>Cerrá y volvé a abrir PowerShell</td>
+      </tr>
+      <tr>
+        <td>source: filename argument required</td>
+        <td>Encoding incorrecto del <code>.bashrc</code></td>
+        <td>Usá <code>printf</code> en lugar de <code>echo</code> para crear el archivo</td>
+      </tr>
+      <tr>
+        <td>Comandos se ejecutan como uno solo</td>
+        <td>Modo de pegado de Git Bash</td>
+        <td>Pegá los comandos de a uno y presioná Enter entre cada uno</td>
+      </tr>
+      <tr>
+        <td>npm install falla con error de permisos</td>
+        <td>Carpeta protegida</td>
+        <td>Asegurate de instalar en tu carpeta de usuario, no en <code>C:\Program Files</code></td>
+      </tr>
+      <tr>
+        <td>claude no se reconoce después de instalar</td>
+        <td>PATH no incluye la carpeta de npm</td>
+        <td>Agregá <code>C:\Users\TU_USUARIO\AppData\Roaming\npm</code> al PATH de usuario (Paso 6)</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ── RESUMEN DE VARIABLES DE ENTORNO ─────────────────────────────────── -->
+  <div class="part-header" style="margin-top:52px;" id="variables-de-entorno">
+    <span class="part-badge">Referencia</span>
+    <span class="part-title">Todas las variables de entorno que tenés que configurar</span>
+    <div class="part-divider"></div>
+  </div>
+
+  <p class="part-intro">
+    Este cuadro resume <strong>todas</strong> las variables y rutas que debés agregar en
+    <em>"Editar las variables de entorno de esta cuenta"</em> antes de usar Claude Code.
+    Reemplazá <code>TU_USUARIO</code> por tu nombre de usuario real de Windows en cada ruta.
+  </p>
+
+  <p style="font-size:14px; color:var(--gray-700); margin-bottom:4px;">Para abrir el editor de variables, buscá en Windows:</p>
+
+  <!-- Mockup buscador de Windows -->
+  <div class="win-search">
+    <div class="win-search-bar">
+      <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+      <span>variables de entorno</span>
+    </div>
+    <div class="win-search-tabs">
+      <div class="win-search-tab active">Todo</div>
+      <div class="win-search-tab">Aplicaciones</div>
+      <div class="win-search-tab">Configuración</div>
+      <div class="win-search-tab">Documentos</div>
+    </div>
+    <div class="win-search-label">Mejor coincidencia</div>
+    <div class="win-search-result highlighted">
+      <div class="win-search-icon env">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10v8H3V4z" stroke="#fff" stroke-width="1.2"/><path d="M6 7l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="win-search-text">
+        <div class="title">Editar las variables de entorno de esta cu...</div>
+        <div class="subtitle">Panel de control</div>
+      </div>
+    </div>
+    <div class="win-search-pointer">
+      <span>&#x2191; Elegí esta opción</span>
+    </div>
+    <div class="win-search-label" style="padding-top:4px;">Configuración</div>
+    <div class="win-search-result">
+      <div class="win-search-icon sys">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="9" rx="1.5" stroke="#999" stroke-width="1.2"/><path d="M4 13h6" stroke="#999" stroke-width="1.2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="win-search-text">
+        <div class="title" style="color:#999;">Editar las variables de entorno del sistema</div>
+        <div class="subtitle">Configuración</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout warning" style="margin-bottom:28px;">
+    <span class="callout-icon">⚠️</span>
+    <div class="callout-body">
+      <strong>Ojo con la opción que elegís</strong>
+      Seleccioná la que dice <strong>"de esta cuenta"</strong> (Panel de control). La opción <em>"del sistema"</em> requiere permisos de administrador y no te va a dejar hacer cambios.
+    </div>
+  </div>
+
+  <table class="trouble-table">
+    <thead>
+      <tr>
+        <th>Variable</th>
+        <th>Ruta a agregar</th>
+        <th>Para qué sirve</th>
+        <th>Paso de la guía</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="color:var(--teal);">Path</td>
+        <td><code>C:\Users\TU_USUARIO\tools\nodejs</code></td>
+        <td>Permite que Windows encuentre los comandos <code>node</code> y <code>npm</code></td>
+        <td>Paso 3</td>
+      </tr>
+      <tr>
+        <td style="color:var(--teal);">Path</td>
+        <td><code>C:\Users\TU_USUARIO\AppData\Roaming\npm</code></td>
+        <td>Permite encontrar programas instalados con <code>npm install -g</code>, incluyendo Claude Code</td>
+        <td>Paso 6</td>
+      </tr>
+      <tr>
+        <td style="color:var(--teal);">Path</td>
+        <td><code>C:\Users\TU_USUARIO\.claude\bin</code></td>
+        <td>Carpeta propia de Claude Code para sus binarios</td>
+        <td>Paso 6</td>
+      </tr>
+      <tr>
+        <td style="color:var(--teal);">Path</td>
+        <td><code>C:\Users\TU_USUARIO\.claude</code></td>
+        <td>Carpeta raíz de configuración de Claude Code</td>
+        <td>Paso PS</td>
+      </tr>
+      <tr>
+        <td style="color:var(--teal);">Path</td>
+        <td><code>C:\Users\TU_USUARIO\.local\bin</code></td>
+        <td>Carpeta auxiliar usada por el instalador de Claude Code</td>
+        <td>Paso PS</td>
+      </tr>
+      <tr>
+        <td style="color:var(--teal);">CLAUDE_CODE_GIT_BASH_PATH</td>
+        <td><code>C:\Users\TU_USUARIO\AppData\Local\Programs\Git\bin</code></td>
+        <td>Le indica a Claude Code dónde está instalado Git Bash</td>
+        <td>Paso PS</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout tip" style="margin-top:20px;">
+    <span class="callout-icon">💡</span>
+    <div class="callout-body">
+      <strong>¿Cómo agregar todas estas rutas?</strong>
+      Podés hacerlo de dos formas: manualmente desde el menú de Windows (buscá <em>"Editar las variables de entorno de esta cuenta"</em>
+      y editá <code>Path</code> para agregar cada ruta), o automáticamente ejecutando los comandos del <strong>Paso PS</strong> en PowerShell.
+      Ambos métodos logran lo mismo. Para la variable <code>CLAUDE_CODE_GIT_BASH_PATH</code>, usá el botón <strong>"Nueva"</strong>
+      en la ventana de variables de usuario para crearla.
+    </div>
+  </div>
+
+  <!-- ── REFERENCIA RÁPIDA ───────────────────────────────────────────────── -->
+  <div class="quick-ref">
+    <div class="quick-ref-title">Referencia rápida — todos los comandos</div>
+    <pre><span class="comment"># 1. Configurar PATH en Git Bash (usar printf, no echo)</span>
+<span class="cmd">printf 'export PATH="/c/Users/TU_USUARIO/tools/nodejs:$PATH"\n' > ~/.bashrc</span>
+
+<span class="comment"># 2. Aplicar cambios en la sesión actual</span>
+<span class="cmd">source ~/.bashrc</span>
+
+<span class="sep">──────────────────────────────────────────────────────────────────</span>
+
+<span class="comment"># 3. Instalar Claude Code</span>
+<span class="cmd">npm install -g @anthropic-ai/claude-code</span>
+
+<span class="comment"># 4. Agregar npm al PATH</span>
+<span class="cmd">echo "export PATH=\"$(npm config get prefix)/bin:\$PATH\"" >> ~/.bashrc</span>
+<span class="cmd">source ~/.bashrc</span>
+
+<span class="sep">──────────────────────────────────────────────────────────────────</span>
+
+<span class="comment"># 5. Verificar instalación</span>
+<span class="cmd">claude --version</span>
+
+<span class="comment"># 6. Iniciar Claude</span>
+<span class="cmd">claude</span></pre>
+  </div>
+
+</main>
+
+<footer class="footer">
+  Guía generada a partir de una instalación real en entorno corporativo con restricciones de administrador — Windows 11, Git Bash
+  <div class="footer-credit">
+    Creado por <a href="https://www.linkedin.com/in/cpatriciogg" target="_blank">Carlos Patricio Gonzalez Guerrico</a>
+  </div>
+</footer>
+
+<script>
+  // ── Toggle step cards ──
+  function toggleStep(headEl) {
+    const card = headEl.closest('.step-card');
+    card.classList.toggle('open');
+  }
+
+  // ── Sticky nav with scroll-based highlighting ──
+  document.addEventListener('DOMContentLoaded', () => {
+    const navWrap = document.querySelector('.progress-bar-wrap');
+    const header = document.querySelector('.header');
+    const steps = document.querySelectorAll('.pb-step');
+
+    const sectionIds = [
+      'sec-prerequisitos', 'sec-nodejs', 'sec-gitbash',
+      'sec-claudecode', 'sec-primeruso', 'sec-problemas',
+      'variables-de-entorno'
+    ];
+
+    const sectionEls = sectionIds.map(id => document.getElementById(id));
+
+    // Sticky shadow: show when header scrolls out of view
+    const stickyObs = new IntersectionObserver(([entry]) => {
+      navWrap.classList.toggle('is-stuck', !entry.isIntersecting);
+    }, { threshold: 0 });
+    stickyObs.observe(header);
+
+    // Update nav bubble states
+    function updateNav() {
+      const navHeight = navWrap.offsetHeight + 12;
+      let activeIndex = 0;
+
+      for (let i = sectionEls.length - 1; i >= 0; i--) {
+        if (sectionEls[i]) {
+          const rect = sectionEls[i].getBoundingClientRect();
+          if (rect.top <= navHeight + 10) {
+            activeIndex = i;
+            break;
+          }
+        }
+      }
+
+      steps.forEach((step, i) => {
+        step.classList.remove('active', 'visited');
+        if (i === activeIndex) {
+          step.classList.add('active');
+        } else if (i < activeIndex) {
+          step.classList.add('visited');
+        }
+      });
+    }
+
+    // IntersectionObserver triggers updateNav on section crossings
+    const sectionObs = new IntersectionObserver(() => {
+      updateNav();
+    }, {
+      root: null,
+      rootMargin: '-70px 0px -35% 0px',
+      threshold: [0, 0.1]
+    });
+
+    sectionEls.forEach(el => {
+      if (el) sectionObs.observe(el);
+    });
+
+    // Debounced scroll listener for edge cases
+    let scrollTimer;
+    window.addEventListener('scroll', () => {
+      clearTimeout(scrollTimer);
+      scrollTimer = setTimeout(updateNav, 50);
+    }, { passive: true });
+
+    // Initial state
+    updateNav();
+
+    // Smooth scroll on nav click
+    steps.forEach(step => {
+      step.addEventListener('click', (e) => {
+        e.preventDefault();
+        const href = step.getAttribute('href');
+        if (href) {
+          const target = document.querySelector(href);
+          if (target) {
+            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
