@@ -753,6 +753,34 @@
       color: #004182;
     }
 
+    .footer-socials {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      margin-top: 12px;
+    }
+
+    .footer-socials a {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--gray-500);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-socials a:hover {
+      color: var(--gray-700);
+    }
+
+    .footer-socials svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+    }
+
     /* ── WIN SEARCH MOCKUP ────────────────────────────────────────────────── */
     .win-search {
       max-width: 420px;
@@ -880,19 +908,195 @@
     a { color: var(--teal); font-weight: 500; text-decoration: none; }
     a:hover { text-decoration: underline; }
 
-    /* ── RESPONSIVE ──────────────────────────────────────────────────────── */
+    /* ── TOUCH & MOBILE BASE ─────────────────────────────────────────────── */
+    .step-head,
+    a.pb-step,
+    .chip {
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .step-head {
+      min-height: 48px;
+    }
+
+    a.pb-step {
+      min-height: 44px;
+      min-width: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ── RESPONSIVE — TABLET (≤ 768px) ─────────────────────────────────── */
+    @media (max-width: 768px) {
+      .header { padding: 36px 28px 32px; }
+      .header-title { font-size: 26px; }
+      .header-sub { font-size: 13px; }
+      .main { padding: 36px 20px 60px; }
+      .quick-ref { padding: 24px 20px; }
+      .quick-ref pre { font-size: 12px; line-height: 1.9; }
+      .author-card { gap: 16px; padding: 20px 20px; }
+      .author-avatar { width: 60px; height: 60px; }
+
+      /* Tables: horizontal scroll wrapper */
+      .trouble-table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+      }
+      .trouble-table thead,
+      .trouble-table tbody,
+      .trouble-table tr,
+      .trouble-table th,
+      .trouble-table td {
+        min-width: 120px;
+      }
+      .trouble-table td:first-child { min-width: 150px; }
+    }
+
+    /* ── RESPONSIVE — MOBILE (≤ 640px) ───────────────────────────────────── */
     @media (max-width: 640px) {
-      .header { padding: 32px 20px 28px; }
-      .header-title { font-size: 22px; }
+      body { font-size: 14px; }
+
+      /* Header */
+      .header { padding: 28px 18px 24px; }
+      .header-eyebrow { font-size: 9px; letter-spacing: 2px; margin-bottom: 10px; }
+      .header-title { font-size: 21px; line-height: 1.25; }
+      .header-sub { font-size: 13px; margin-bottom: 24px; }
+      .prereq-chips { gap: 8px; padding-top: 16px; }
+      .chip { font-size: 11px; padding: 5px 11px; gap: 5px; }
+      .chip svg { width: 13px; height: 13px; }
+
+      /* Navigation */
       .progress-bar-wrap { padding: 8px 10px; }
       .progress-bar { gap: 2px; padding: 4px 6px; }
       .pb-label { display: none; }
       .pb-step { padding: 4px 5px; gap: 0; }
-      .pb-dot { width: 22px; height: 22px; font-size: 10px; }
-      .main { padding: 32px 16px 60px; }
-      .step-head { padding: 16px 18px; }
-      .step-body { padding: 0 18px 20px 18px; }
+      .pb-dot { width: 26px; height: 26px; font-size: 11px; }
+
+      /* Main layout */
+      .main { padding: 28px 14px 50px; }
+
+      /* Part headers */
+      .part-header { gap: 10px; margin-top: 40px; margin-bottom: 18px; flex-wrap: wrap; }
+      .part-badge { font-size: 9px; padding: 4px 10px; }
+      .part-title { font-size: 16px; }
+      .part-intro { font-size: 13px; }
+      .part-divider { display: none; }
+
+      /* Step cards */
+      .step-card { border-radius: 10px; }
+      .step-head { padding: 16px 16px; gap: 12px; }
+      .step-num { width: 30px; height: 30px; font-size: 13px; }
+      .step-title { font-size: 15px; }
+      .step-subtitle { font-size: 12px; }
+      .step-body { padding: 0 16px 18px 16px; }
+      .step-body-inner { padding-top: 16px; }
+      .step-body p { font-size: 13px; }
+      .step-body li { font-size: 13px; }
+
+      /* Code blocks */
+      .code-block { padding: 14px 14px; margin: 12px 0; border-radius: 8px; }
+      .code-block pre { font-size: 11.5px; line-height: 1.7; word-break: break-all; white-space: pre-wrap; }
+      code { font-size: 11.5px; padding: 2px 5px; }
+
+      /* Callouts */
+      .callout { padding: 12px 14px; gap: 10px; font-size: 12.5px; }
+      .callout-icon { font-size: 15px; }
+
+      /* Sub-steps */
+      .substeps li { padding-left: 30px; font-size: 13px; }
+      .substeps li::before { width: 20px; height: 20px; font-size: 10px; }
+
+      /* Verify box */
+      .verify-box { padding: 12px 14px; }
+      .verify-box .v-body { font-size: 12.5px; }
+
+      /* Author card — stack vertically */
+      .author-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 20px 18px;
+        gap: 14px;
+      }
+      .author-avatar { width: 64px; height: 64px; }
+      .author-name { font-size: 14px; }
+      .author-bio { font-size: 12.5px; }
+      .author-link { justify-content: center; }
+
+      /* Tables — card-style stacking */
+      .trouble-table { font-size: 12px; }
+      .trouble-table thead { display: none; }
+      .trouble-table tbody { display: block; }
+      .trouble-table tbody tr {
+        display: flex;
+        flex-direction: column;
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--gray-200);
+        gap: 6px;
+      }
+      .trouble-table tbody tr:nth-child(even) { background: #faf9f6; }
+      .trouble-table td {
+        display: block;
+        padding: 0;
+        min-width: 0 !important;
+      }
+      .trouble-table td:first-child {
+        font-size: 12px;
+        min-width: 0;
+        margin-bottom: 2px;
+      }
+      .trouble-table td::before {
+        content: attr(data-label);
+        display: block;
+        font-size: 10px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        color: var(--gray-500);
+        margin-bottom: 2px;
+      }
+
+      /* Quick ref */
+      .quick-ref { padding: 20px 16px; margin-top: 40px; border-radius: 10px; }
+      .quick-ref-title { font-size: 10px; margin-bottom: 14px; }
+      .quick-ref pre { font-size: 11px; line-height: 1.8; white-space: pre-wrap; word-break: break-all; }
+
+      /* Win search mockup */
+      .win-search { font-size: 12px; border-radius: 10px; margin: 16px auto 24px; }
+      .win-search-bar span { font-size: 12px; }
+      .win-search-tab { font-size: 10px; padding: 7px 10px; }
+      .win-search-text .title { font-size: 12px; }
+      .win-search-text .subtitle { font-size: 10px; }
+
+      /* Footer */
+      .footer { padding: 24px 18px 22px; font-size: 11px; margin-top: 40px; }
+      .footer-credit { font-size: 12px; }
+      .footer-socials { gap: 14px; margin-top: 10px; }
+      .footer-socials a { font-size: 12px; }
+    }
+
+    /* ── RESPONSIVE — SMALL PHONES (≤ 400px) ─────────────────────────────── */
+    @media (max-width: 400px) {
+      .header { padding: 24px 14px 20px; }
+      .header-title { font-size: 19px; }
+      .header-sub { font-size: 12px; }
+      .chip { font-size: 10px; padding: 4px 9px; }
+
+      .main { padding: 24px 12px 40px; }
+
+      .pb-dot { width: 24px; height: 24px; font-size: 10px; }
+
+      .step-head { padding: 14px 14px; }
+      .step-body { padding: 0 14px 16px 14px; }
       .step-num { display: none; }
+
+      .code-block pre { font-size: 10.5px; }
+      code { font-size: 10.5px; }
+      .quick-ref pre { font-size: 10px; }
+
+      .author-card { padding: 16px 14px; }
     }
   </style>
 </head>
@@ -968,11 +1172,15 @@
     <div class="author-info">
       <div class="author-name">Carlos Patricio Gonzalez Guerrico</div>
       <div class="author-bio">
-        Analista de Datos Senior e Ingeniero de <span class="hl">Automatización</span> con +4 años en fintech e ingeniería de datos. Especializado en <span class="hl">SQL</span> (BigQuery, Redshift), <span class="hl">Python</span>, <span class="hl">JavaScript</span> y orquestación de flujos (n8n, Airflow, AWS). Construyo pipelines automatizados, dashboards de BI y herramientas internas potenciadas con <span class="hl">AI</span>. <span class="hl">Ingeniero Industrial</span> con base en optimización de procesos (DMAIC), análisis de cohortes, retención, KPIs (MAUs, TPV) y toma de decisiones data-driven en entornos de alto crecimiento.
+        Ingeniero especializado en <span class="hl">automatización y análisis de datos</span> con +4 años de experiencia en fintech. Especializado en <span class="hl">SQL</span> (BigQuery, Redshift), <span class="hl">Python</span> (automatización de procesos, análisis de datos, AI tools), <span class="hl">JavaScript</span> y orquestación de flujos (n8n, Airflow, AWS). Construyo pipelines automatizados, dashboards de BI y herramientas internas potenciadas con <span class="hl">AI</span>. <span class="hl">Ingeniero Industrial</span> con experiencia en optimización de procesos (DMAIC), análisis de cohortes, KPIs (MAUs, TPV) y toma de decisiones data-driven en entornos de alto crecimiento.
       </div>
       <a href="https://www.linkedin.com/in/cpatriciogg" target="_blank" class="author-link">
         <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
         linkedin.com/in/cpatriciogg
+      </a>
+      <a href="https://github.com/pato-gonzalez" target="_blank" class="author-link">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        github.com/pato-gonzalez
       </a>
     </div>
   </div>
@@ -1023,7 +1231,7 @@
           </li>
           <li>
             <strong>Python</strong> — <a href="https://www.python.org/downloads/" target="_blank">python.org/downloads</a><br>
-            Descargá la última versión. <strong>Importante:</strong> durante la instalación, marcá la casilla
+            Descargá la última versión. <strong>Importante:</strong> No descargues el instalador "Python install manager", descargá el archivo "Latest Python 3 release". Además, durante la instalación, marcá la casilla
             <em>"Add Python to PATH"</em> antes de hacer clic en "Install Now".
           </li>
         </ul>
@@ -1390,6 +1598,25 @@
           <pre><span class="cmd">$env:PATH = "$env:PATH;C:\Users\$ENV:USERNAME\.local\bin"</span></pre>
         </div>
 
+        <div class="code-block">
+          <div class="code-label">9 — Agregar Python al PATH (permanente)</div>
+          <pre><span class="cmd">setx PATH "$env:PATH;C:\Users\$ENV:USERNAME\AppData\Local\Programs\Python\Python313;C:\Users\$ENV:USERNAME\AppData\Local\Programs\Python\Python313\Scripts"</span></pre>
+        </div>
+
+        <div class="code-block">
+          <div class="code-label">10 — Agregar Python al PATH (sesión actual)</div>
+          <pre><span class="cmd">$env:PATH = "$env:PATH;C:\Users\$ENV:USERNAME\AppData\Local\Programs\Python\Python313;C:\Users\$ENV:USERNAME\AppData\Local\Programs\Python\Python313\Scripts"</span></pre>
+        </div>
+
+        <div class="callout warning" style="margin-top:12px;">
+          <span class="callout-icon">⚠️</span>
+          <div class="callout-body">
+            <strong>Ajustá el número de versión de Python</strong>
+            Los comandos de arriba usan <code>Python313</code> (Python 3.13). Si instalaste otra versión, reemplazá <code>Python313</code> por la que corresponda (por ejemplo, <code>Python312</code> para Python 3.12 o <code>Python314</code> para Python 3.14).
+            Para verificar tu versión, abrí la carpeta <code>C:\Users\TU_USUARIO\AppData\Local\Programs\Python\</code> y fijate cómo se llama la subcarpeta.
+          </div>
+        </div>
+
         <div class="verify-box">
           <span class="v-icon">✅</span>
           <div class="v-body">
@@ -1536,29 +1763,29 @@
     </thead>
     <tbody>
       <tr>
-        <td>node no se reconoce en PowerShell</td>
-        <td>PATH no fue actualizado</td>
-        <td>Cerrá y volvé a abrir PowerShell</td>
+        <td data-label="Error">node no se reconoce en PowerShell</td>
+        <td data-label="Causa">PATH no fue actualizado</td>
+        <td data-label="Solución">Cerrá y volvé a abrir PowerShell, a veces es necesario cerrarlo desde el administrador de tareas o reiniciar e equipo</td>
       </tr>
       <tr>
-        <td>source: filename argument required</td>
-        <td>Encoding incorrecto del <code>.bashrc</code></td>
-        <td>Usá <code>printf</code> en lugar de <code>echo</code> para crear el archivo</td>
+        <td data-label="Error">source: filename argument required</td>
+        <td data-label="Causa">Encoding incorrecto del <code>.bashrc</code></td>
+        <td data-label="Solución">Usá <code>printf</code> en lugar de <code>echo</code> para crear el archivo</td>
       </tr>
       <tr>
-        <td>Comandos se ejecutan como uno solo</td>
-        <td>Modo de pegado de Git Bash</td>
-        <td>Pegá los comandos de a uno y presioná Enter entre cada uno</td>
+        <td data-label="Error">Comandos se ejecutan como uno solo</td>
+        <td data-label="Causa">Modo de pegado de Git Bash</td>
+        <td data-label="Solución">Pegá los comandos de a uno y presioná Enter entre cada uno</td>
       </tr>
       <tr>
-        <td>npm install falla con error de permisos</td>
-        <td>Carpeta protegida</td>
-        <td>Asegurate de instalar en tu carpeta de usuario, no en <code>C:\Program Files</code></td>
+        <td data-label="Error">npm install falla con error de permisos</td>
+        <td data-label="Causa">Carpeta protegida</td>
+        <td data-label="Solución">Asegurate de instalar en tu carpeta de usuario, no en <code>C:\Program Files</code></td>
       </tr>
       <tr>
-        <td>claude no se reconoce después de instalar</td>
-        <td>PATH no incluye la carpeta de npm</td>
-        <td>Agregá <code>C:\Users\TU_USUARIO\AppData\Roaming\npm</code> al PATH de usuario (Paso 6)</td>
+        <td data-label="Error">claude no se reconoce después de instalar</td>
+        <td data-label="Causa">PATH no incluye la carpeta de npm</td>
+        <td data-label="Solución">Agregá <code>C:\Users\TU_USUARIO\AppData\Roaming\npm</code> al PATH de usuario (Paso 6)</td>
       </tr>
     </tbody>
   </table>
@@ -1634,40 +1861,52 @@
     </thead>
     <tbody>
       <tr>
-        <td style="color:var(--teal);">Path</td>
-        <td><code>C:\Users\TU_USUARIO\tools\nodejs</code></td>
-        <td>Permite que Windows encuentre los comandos <code>node</code> y <code>npm</code></td>
-        <td>Paso 3</td>
+        <td style="color:var(--teal);" data-label="Variable">Path</td>
+        <td data-label="Ruta">C:\Users\TU_USUARIO\tools\nodejs</td>
+        <td data-label="Para qué sirve">Permite que Windows encuentre los comandos <code>node</code> y <code>npm</code></td>
+        <td data-label="Paso">Paso 3</td>
       </tr>
       <tr>
-        <td style="color:var(--teal);">Path</td>
-        <td><code>C:\Users\TU_USUARIO\AppData\Roaming\npm</code></td>
-        <td>Permite encontrar programas instalados con <code>npm install -g</code>, incluyendo Claude Code</td>
-        <td>Paso 6</td>
+        <td style="color:var(--teal);" data-label="Variable">Path</td>
+        <td data-label="Ruta">C:\Users\TU_USUARIO\AppData\Roaming\npm</td>
+        <td data-label="Para qué sirve">Permite encontrar programas instalados con <code>npm install -g</code>, incluyendo Claude Code</td>
+        <td data-label="Paso">Paso 6</td>
       </tr>
       <tr>
-        <td style="color:var(--teal);">Path</td>
-        <td><code>C:\Users\TU_USUARIO\.claude\bin</code></td>
-        <td>Carpeta propia de Claude Code para sus binarios</td>
-        <td>Paso 6</td>
+        <td style="color:var(--teal);" data-label="Variable">Path</td>
+        <td data-label="Ruta">C:\Users\TU_USUARIO\.claude\bin</td>
+        <td data-label="Para qué sirve">Carpeta propia de Claude Code para sus binarios</td>
+        <td data-label="Paso">Paso 6</td>
       </tr>
       <tr>
-        <td style="color:var(--teal);">Path</td>
-        <td><code>C:\Users\TU_USUARIO\.claude</code></td>
-        <td>Carpeta raíz de configuración de Claude Code</td>
-        <td>Paso PS</td>
+        <td style="color:var(--teal);" data-label="Variable">Path</td>
+        <td data-label="Ruta">C:\Users\TU_USUARIO\.claude</td>
+        <td data-label="Para qué sirve">Carpeta raíz de configuración de Claude Code</td>
+        <td data-label="Paso">Paso PS</td>
       </tr>
       <tr>
-        <td style="color:var(--teal);">Path</td>
-        <td><code>C:\Users\TU_USUARIO\.local\bin</code></td>
-        <td>Carpeta auxiliar usada por el instalador de Claude Code</td>
-        <td>Paso PS</td>
+        <td style="color:var(--teal);" data-label="Variable">Path</td>
+        <td data-label="Ruta">C:\Users\TU_USUARIO\.local\bin</td>
+        <td data-label="Para qué sirve">Carpeta auxiliar usada por el instalador de Claude Code</td>
+        <td data-label="Paso">Paso PS</td>
       </tr>
       <tr>
-        <td style="color:var(--teal);">CLAUDE_CODE_GIT_BASH_PATH</td>
-        <td><code>C:\Users\TU_USUARIO\AppData\Local\Programs\Git\bin</code></td>
-        <td>Le indica a Claude Code dónde está instalado Git Bash</td>
-        <td>Paso PS</td>
+        <td style="color:var(--teal);" data-label="Variable">Path</td>
+        <td data-label="Ruta">C:\Users\TU_USUARIO\AppData\Local\Programs\Python\Python313</td>
+        <td data-label="Para qué sirve">Permite que Windows encuentre el comando <code>python</code></td>
+        <td data-label="Paso">Paso PS</td>
+      </tr>
+      <tr>
+        <td style="color:var(--teal);" data-label="Variable">Path</td>
+        <td data-label="Ruta">C:\Users\TU_USUARIO\AppData\Local\Programs\Python\Python313\Scripts</td>
+        <td data-label="Para qué sirve">Permite encontrar programas instalados con <code>pip</code></td>
+        <td data-label="Paso">Paso PS</td>
+      </tr>
+      <tr>
+        <td style="color:var(--teal);" data-label="Variable">CLAUDE_CODE_GIT_BASH_PATH</td>
+        <td data-label="Ruta">C:\Users\TU_USUARIO\AppData\Local\Programs\Git\bin</td>
+        <td data-label="Para qué sirve">Le indica a Claude Code dónde está instalado Git Bash</td>
+        <td data-label="Paso">Paso PS</td>
       </tr>
     </tbody>
   </table>
@@ -1715,7 +1954,17 @@
 <footer class="footer">
   Guía generada a partir de una instalación real en entorno corporativo con restricciones de administrador — Windows 11, Git Bash
   <div class="footer-credit">
-    Creado por <a href="https://www.linkedin.com/in/cpatriciogg" target="_blank">Carlos Patricio Gonzalez Guerrico</a>
+    Creado por Carlos Patricio Gonzalez Guerrico
+  </div>
+  <div class="footer-socials">
+    <a href="https://www.linkedin.com/in/cpatriciogg/?locale=en-US" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+      LinkedIn
+    </a>
+    <a href="https://github.com/pato-gonzalez" target="_blank">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+      GitHub
+    </a>
   </div>
 </footer>
 
