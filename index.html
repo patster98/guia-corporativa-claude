@@ -1099,31 +1099,97 @@
 
       .author-card { padding: 16px 14px; }
     }
+
+    /* ── LANGUAGE TOGGLE ─────────────────────────────────────────────────── */
+    .lang-toggle {
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      z-index: 10;
+    }
+
+    .lang-toggle span {
+      font-size: 11px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.45);
+      letter-spacing: 0.5px;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+
+    .lang-toggle span.active {
+      color: var(--yellow);
+    }
+
+    .lang-switch {
+      width: 40px;
+      height: 22px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 100px;
+      cursor: pointer;
+      position: relative;
+      transition: background 0.3s;
+      flex-shrink: 0;
+    }
+
+    .lang-switch::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 14px;
+      height: 14px;
+      background: var(--yellow);
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.2);
+    }
+
+    .lang-switch.en::after {
+      transform: translateX(18px);
+    }
+
+    @media (max-width: 640px) {
+      .lang-toggle { top: 14px; right: 14px; gap: 6px; }
+      .lang-toggle span { font-size: 10px; }
+      .lang-switch { width: 36px; height: 20px; }
+      .lang-switch::after { width: 12px; height: 12px; }
+      .lang-switch.en::after { transform: translateX(16px); }
+    }
   </style>
 </head>
 <body>
 
 <!-- ══ HEADER ══════════════════════════════════════════════════════════════ -->
 <header class="header">
-  <div class="header-eyebrow">Guía de instalación &middot; Windows sin permisos de administrador</div>
-  <h1 class="header-title">Cómo instalar Claude Code en una computadora corporativa con Windows</h1>
-  <p class="header-sub">Seguí esta guía paso a paso. No necesitás permisos de administrador ni experiencia técnica previa.</p>
+  <div class="lang-toggle">
+    <span class="active" id="lang-es" onclick="setLang('es')">ES</span>
+    <div class="lang-switch" id="lang-switch" onclick="toggleLang()"></div>
+    <span id="lang-en" onclick="setLang('en')">EN</span>
+  </div>
+  <div class="header-eyebrow" data-i18n="h.eyebrow">Guía de instalación &middot; Windows sin permisos de administrador</div>
+  <h1 class="header-title" data-i18n="h.title">Cómo instalar Claude Code en una computadora corporativa con Windows</h1>
+  <p class="header-sub" data-i18n="h.sub">Seguí esta guía paso a paso. No necesitás permisos de administrador ni experiencia técnica previa.</p>
   <div class="prereq-chips">
     <div class="chip">
       <svg viewBox="0 0 16 16" fill="none"><rect x="1" y="2" width="14" height="11" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M4 6l4 3 4-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Acceso a internet
+      <span data-i18n="chip.1">Acceso a internet</span>
     </div>
     <div class="chip">
       <svg viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 5h6M5 8h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      Windows 10 / 11
+      <span data-i18n="chip.2">Windows 10 / 11</span>
     </div>
     <div class="chip">
       <svg viewBox="0 0 16 16" fill="none"><circle cx="8" cy="8" r="6" stroke="currentColor" stroke-width="1.5"/><path d="M8 5v3l2 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      ~20 minutos
+      <span data-i18n="chip.3">~20 minutos</span>
     </div>
     <div class="chip">
       <svg viewBox="0 0 16 16" fill="none"><path d="M8 1l1.5 3 3.5.5-2.5 2.5.5 3.5L8 9l-3 1.5.5-3.5L3 4.5l3.5-.5L8 1z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
-      Sin experiencia técnica
+      <span data-i18n="chip.4">Sin experiencia técnica</span>
     </div>
   </div>
 </header>
@@ -1133,31 +1199,31 @@
   <div class="progress-bar">
     <a href="#sec-prerequisitos" class="pb-step">
       <div class="pb-dot">1</div>
-      <span class="pb-label">Prerequisitos</span>
+      <span class="pb-label" data-i18n="nav.1">Prerequisitos</span>
     </a>
     <a href="#sec-nodejs" class="pb-step">
       <div class="pb-dot">2</div>
-      <span class="pb-label">Node.js</span>
+      <span class="pb-label" data-i18n="nav.2">Node.js</span>
     </a>
     <a href="#sec-gitbash" class="pb-step">
       <div class="pb-dot">3</div>
-      <span class="pb-label">Git Bash</span>
+      <span class="pb-label" data-i18n="nav.3">Git Bash</span>
     </a>
     <a href="#sec-claudecode" class="pb-step">
       <div class="pb-dot">4</div>
-      <span class="pb-label">Claude Code</span>
+      <span class="pb-label" data-i18n="nav.4">Claude Code</span>
     </a>
     <a href="#sec-primeruso" class="pb-step">
       <div class="pb-dot">5</div>
-      <span class="pb-label">Primer uso</span>
+      <span class="pb-label" data-i18n="nav.5">Primer uso</span>
     </a>
     <a href="#sec-problemas" class="pb-step">
       <div class="pb-dot">⚠</div>
-      <span class="pb-label">Problemas</span>
+      <span class="pb-label" data-i18n="nav.6">Problemas</span>
     </a>
     <a href="#variables-de-entorno" class="pb-step">
       <div class="pb-dot">📋</div>
-      <span class="pb-label">Variables</span>
+      <span class="pb-label" data-i18n="nav.7">Variables</span>
     </a>
   </div>
 </nav>
@@ -1172,7 +1238,7 @@
     </div>
     <div class="author-info">
       <div class="author-name">Carlos Patricio Gonzalez Guerrico</div>
-      <div class="author-bio">
+      <div class="author-bio" data-i18n="auth.bio">
         Ingeniero especializado en <span class="hl">automatización y análisis de datos</span> con +4 años de experiencia en fintech. Especializado en <span class="hl">SQL</span> (BigQuery, Redshift), <span class="hl">Python</span> (automatización de procesos, análisis de datos, AI tools), <span class="hl">JavaScript</span> y orquestación de flujos (n8n, Airflow, AWS). Construyo pipelines automatizados, dashboards de BI y herramientas internas potenciadas con <span class="hl">AI</span>. <span class="hl">Ingeniero Industrial</span> con experiencia en optimización de procesos (DMAIC), análisis de cohortes, KPIs (MAUs, TPV) y toma de decisiones data-driven en entornos de alto crecimiento.
       </div>
       <a href="https://www.linkedin.com/in/cpatriciogg" target="_blank" class="author-link">
@@ -1190,8 +1256,8 @@
   <div class="callout info" style="margin-bottom:32px; font-size:14px;">
     <span class="callout-icon">📖</span>
     <div class="callout-body">
-      <strong>¿Tenés algún problema? Consultá la documentación oficial de Anthropic</strong>
-      Anthropic tiene una guía oficial de resolución de problemas con soluciones para los errores más comunes de instalación.
+      <strong data-i18n="doc.title">¿Tenés algún problema? Consultá la documentación oficial de Anthropic</strong>
+      <span data-i18n="doc.body">Anthropic tiene una guía oficial de resolución de problemas con soluciones para los errores más comunes de instalación.</span>
       <br style="margin-bottom:6px;">
       <a href="https://code.claude.com/docs/es/troubleshooting" target="_blank" style="display:inline-flex; align-items:center; gap:4px; margin-top:8px; font-weight:600;">
         code.claude.com/docs/es/troubleshooting
@@ -1202,8 +1268,8 @@
 
   <!-- ── ANTES DE EMPEZAR ───────────────────────────────────────────────── -->
   <div class="part-header" id="sec-prerequisitos">
-    <span class="part-badge">Antes de empezar</span>
-    <span class="part-title">Descargá estas herramientas primero</span>
+    <span class="part-badge" data-i18n="p0.badge">Antes de empezar</span>
+    <span class="part-title" data-i18n="p0.title">Descargá estas herramientas primero</span>
     <div class="part-divider"></div>
   </div>
 
@@ -1211,13 +1277,13 @@
     <div class="step-head" onclick="toggleStep(this)">
       <div class="step-num" style="background:var(--teal); color:#fff; font-size:18px;">✓</div>
       <div class="step-info">
-        <div class="step-title">Herramientas necesarias</div>
-        <div class="step-subtitle">Tres programas gratuitos que necesitás tener instalados antes de empezar</div>
+        <div class="step-title" data-i18n="s0.title">Herramientas necesarias</div>
+        <div class="step-subtitle" data-i18n="s0.sub">Tres programas gratuitos que necesitás tener instalados antes de empezar</div>
       </div>
       <div class="step-toggle">▾</div>
     </div>
     <div class="step-body">
-      <div class="step-body-inner">
+      <div class="step-body-inner" data-i18n="s0.body">
         <p>Instalá estas tres herramientas antes de continuar. Hacé clic en cada enlace para ir a la página oficial de descarga:</p>
         <ul>
           <li>
@@ -1250,12 +1316,12 @@
 
   <!-- ── PARTE 1 — NODE.JS ───────────────────────────────────────────────── -->
   <div class="part-header" id="sec-nodejs">
-    <span class="part-badge">Parte 1</span>
-    <span class="part-title">Instalar Node.js sin permisos de administrador</span>
+    <span class="part-badge" data-i18n="p1.badge">Parte 1</span>
+    <span class="part-title" data-i18n="p1.title">Instalar Node.js sin permisos de administrador</span>
     <div class="part-divider"></div>
   </div>
 
-  <p class="part-intro">
+  <p class="part-intro" data-i18n="p1.intro">
     Node.js es el motor que necesita Claude Code para funcionar. Como no podés usar el instalador normal,
     vamos a usar la versión portable: un ZIP que no requiere instalación.
   </p>
@@ -1265,13 +1331,13 @@
     <div class="step-head" onclick="toggleStep(this)">
       <div class="step-num">1</div>
       <div class="step-info">
-        <div class="step-title">Descargar Node.js en formato ZIP</div>
-        <div class="step-subtitle">Buscá el archivo .zip — NO el instalador .msi</div>
+        <div class="step-title" data-i18n="s1.title">Descargar Node.js en formato ZIP</div>
+        <div class="step-subtitle" data-i18n="s1.sub">Buscá el archivo .zip — NO el instalador .msi</div>
       </div>
       <div class="step-toggle">▾</div>
     </div>
     <div class="step-body">
-      <div class="step-body-inner">
+      <div class="step-body-inner" data-i18n="s1.body">
         <ol class="substeps">
           <li>Abrí tu navegador y andá a <a href="https://nodejs.org/en/download" target="_blank">nodejs.org/en/download</a></li>
           <li>Buscá la sección de descargas para <strong>Windows</strong></li>
@@ -1299,13 +1365,13 @@
     <div class="step-head" onclick="toggleStep(this)">
       <div class="step-num">2</div>
       <div class="step-info">
-        <div class="step-title">Extraer el ZIP en tu carpeta de usuario</div>
-        <div class="step-subtitle">Creá la estructura de carpetas y descomprimí el archivo</div>
+        <div class="step-title" data-i18n="s2.title">Extraer el ZIP en tu carpeta de usuario</div>
+        <div class="step-subtitle" data-i18n="s2.sub">Creá la estructura de carpetas y descomprimí el archivo</div>
       </div>
       <div class="step-toggle">▾</div>
     </div>
     <div class="step-body">
-      <div class="step-body-inner">
+      <div class="step-body-inner" data-i18n="s2.body">
         <ol class="substeps">
           <li>Abrí el <strong>Explorador de Windows</strong></li>
           <li>Navegá a <code>C:\Users\TU_USUARIO\</code> (reemplazá <code>TU_USUARIO</code> por tu nombre de usuario real)</li>
@@ -1329,13 +1395,13 @@
     <div class="step-head" onclick="toggleStep(this)">
       <div class="step-num">3</div>
       <div class="step-info">
-        <div class="step-title">Agregar Node.js al PATH de tu usuario</div>
-        <div class="step-subtitle">El PATH es la lista de rutas que Windows consulta cuando escribís un comando</div>
+        <div class="step-title" data-i18n="s3.title">Agregar Node.js al PATH de tu usuario</div>
+        <div class="step-subtitle" data-i18n="s3.sub">El PATH es la lista de rutas que Windows consulta cuando escribís un comando</div>
       </div>
       <div class="step-toggle">▾</div>
     </div>
     <div class="step-body">
-      <div class="step-body-inner">
+      <div class="step-body-inner" data-i18n="s3.body">
         <div class="callout info">
           <span class="callout-icon">ℹ️</span>
           <div class="callout-body">
@@ -1392,12 +1458,12 @@
 
   <!-- ── PARTE 2 — GIT BASH ──────────────────────────────────────────────── -->
   <div class="part-header" id="sec-gitbash">
-    <span class="part-badge">Parte 2</span>
-    <span class="part-title">Configurar Git Bash</span>
+    <span class="part-badge" data-i18n="p2.badge">Parte 2</span>
+    <span class="part-title" data-i18n="p2.title">Configurar Git Bash</span>
     <div class="part-divider"></div>
   </div>
 
-  <p class="part-intro">
+  <p class="part-intro" data-i18n="p2.intro">
     Git Bash es la consola que vamos a usar para instalar Claude. Necesita saber dónde encontrar Node.js.
   </p>
 
@@ -1406,13 +1472,13 @@
     <div class="step-head" onclick="toggleStep(this)">
       <div class="step-num">4</div>
       <div class="step-info">
-        <div class="step-title">Abrir Git Bash y configurar el PATH</div>
-        <div class="step-subtitle">Decile a Git Bash dónde encontrar Node.js</div>
+        <div class="step-title" data-i18n="s4.title">Abrir Git Bash y configurar el PATH</div>
+        <div class="step-subtitle" data-i18n="s4.sub">Decile a Git Bash dónde encontrar Node.js</div>
       </div>
       <div class="step-toggle">▾</div>
     </div>
     <div class="step-body">
-      <div class="step-body-inner">
+      <div class="step-body-inner" data-i18n="s4.body">
         <ol class="substeps">
           <li>Buscá <strong>Git Bash</strong> en el menú inicio y abrilo</li>
           <li>
@@ -1460,8 +1526,8 @@
 
   <!-- ── PARTE 3 — CLAUDE CODE ───────────────────────────────────────────── -->
   <div class="part-header" id="sec-claudecode">
-    <span class="part-badge">Parte 3</span>
-    <span class="part-title">Instalar Claude Code</span>
+    <span class="part-badge" data-i18n="p3.badge">Parte 3</span>
+    <span class="part-title" data-i18n="p3.title">Instalar Claude Code</span>
     <div class="part-divider"></div>
   </div>
 
@@ -1470,13 +1536,13 @@
     <div class="step-head" onclick="toggleStep(this)">
       <div class="step-num">5</div>
       <div class="step-info">
-        <div class="step-title">Instalar Claude Code con npm</div>
-        <div class="step-subtitle">Un solo comando — puede tardar varios minutos</div>
+        <div class="step-title" data-i18n="s5.title">Instalar Claude Code con npm</div>
+        <div class="step-subtitle" data-i18n="s5.sub">Un solo comando — puede tardar varios minutos</div>
       </div>
       <div class="step-toggle">▾</div>
     </div>
     <div class="step-body">
-      <div class="step-body-inner">
+      <div class="step-body-inner" data-i18n="s5.body">
         <p>En Git Bash, ejecutá este comando:</p>
         <div class="code-block">
           <pre><span class="cmd">npm install -g @anthropic-ai/claude-code</span></pre>
@@ -1497,13 +1563,13 @@
     <div class="step-head" onclick="toggleStep(this)">
       <div class="step-num">6</div>
       <div class="step-info">
-        <div class="step-title">Agregar Claude al PATH de tu usuario en Windows</div>
-        <div class="step-subtitle">Decile a Windows dónde encontrar el comando <code>claude</code></div>
+        <div class="step-title" data-i18n="s6.title">Agregar Claude al PATH de tu usuario en Windows</div>
+        <div class="step-subtitle" data-i18n="s6.sub">Decile a Windows dónde encontrar el comando <code>claude</code></div>
       </div>
       <div class="step-toggle">▾</div>
     </div>
     <div class="step-body">
-      <div class="step-body-inner">
+      <div class="step-body-inner" data-i18n="s6.body">
         <ol class="substeps">
           <li>Abrí el <strong>buscador de Windows</strong> y buscá <strong>"Editar las variables de entorno de esta cuenta"</strong> (igual que en el Paso 3)</li>
           <li>Hacé doble clic en la variable <code>Path</code> de la sección de arriba (<em>"Variables de usuario"</em>)</li>
@@ -1538,13 +1604,13 @@
     <div class="step-head" onclick="toggleStep(this)">
       <div class="step-num" style="background:#5c2d91; color:#fff; font-size:11px; font-weight:800; letter-spacing:-0.5px;">PS</div>
       <div class="step-info">
-        <div class="step-title">Paso extra para Windows: configurar variables de entorno desde PowerShell</div>
-        <div class="step-subtitle">Alternativa al método manual — ejecutá estos comandos en PowerShell, de a uno</div>
+        <div class="step-title" data-i18n="sps.title">Paso extra para Windows: configurar variables de entorno desde PowerShell</div>
+        <div class="step-subtitle" data-i18n="sps.sub">Alternativa al método manual — ejecutá estos comandos en PowerShell, de a uno</div>
       </div>
       <div class="step-toggle">▾</div>
     </div>
     <div class="step-body">
-      <div class="step-body-inner">
+      <div class="step-body-inner" data-i18n="sps.body">
         <p>
           Si tuviste problemas con el método manual o preferís hacerlo todo desde la terminal,
           podés usar estos comandos de PowerShell. Abrí <strong>PowerShell</strong> (no Git Bash)
@@ -1652,13 +1718,13 @@
     <div class="step-head" onclick="toggleStep(this)">
       <div class="step-num">7</div>
       <div class="step-info">
-        <div class="step-title">Agregar el PATH de npm en Git Bash también</div>
-        <div class="step-subtitle">Para que la consola encuentre el comando <code>claude</code></div>
+        <div class="step-title" data-i18n="s7.title">Agregar el PATH de npm en Git Bash también</div>
+        <div class="step-subtitle" data-i18n="s7.sub">Para que la consola encuentre el comando <code>claude</code></div>
       </div>
       <div class="step-toggle">▾</div>
     </div>
     <div class="step-body">
-      <div class="step-body-inner">
+      <div class="step-body-inner" data-i18n="s7.body">
         <p>En Git Bash, ejecutá estos dos comandos (de a uno):</p>
         <div class="code-block">
           <pre><span class="cmd">echo "export PATH=\"$(npm config get prefix)/bin:\$PATH\"" &gt;&gt; ~/.bashrc</span>
@@ -1679,13 +1745,13 @@
     <div class="step-head" onclick="toggleStep(this)">
       <div class="step-num">8</div>
       <div class="step-info">
-        <div class="step-title">Verificar que todo funciona</div>
-        <div class="step-subtitle">Si ves la versión, la instalación fue exitosa</div>
+        <div class="step-title" data-i18n="s8.title">Verificar que todo funciona</div>
+        <div class="step-subtitle" data-i18n="s8.sub">Si ves la versión, la instalación fue exitosa</div>
       </div>
       <div class="step-toggle">▾</div>
     </div>
     <div class="step-body">
-      <div class="step-body-inner">
+      <div class="step-body-inner" data-i18n="s8.body">
         <ol class="substeps">
           <li>Cerrá Git Bash</li>
           <li>Volvé a abrirlo</li>
@@ -1709,8 +1775,8 @@
 
   <!-- ── PARTE 4 — PRIMER USO ────────────────────────────────────────────── -->
   <div class="part-header" id="sec-primeruso">
-    <span class="part-badge">Parte 4</span>
-    <span class="part-title">Usar Claude Code por primera vez</span>
+    <span class="part-badge" data-i18n="p4.badge">Parte 4</span>
+    <span class="part-title" data-i18n="p4.title">Usar Claude Code por primera vez</span>
     <div class="part-divider"></div>
   </div>
 
@@ -1719,13 +1785,13 @@
     <div class="step-head" onclick="toggleStep(this)">
       <div class="step-num">9</div>
       <div class="step-info">
-        <div class="step-title">Iniciar sesión</div>
-        <div class="step-subtitle">La primera vez te va a pedir que te autentiques con tu cuenta de Anthropic</div>
+        <div class="step-title" data-i18n="s9.title">Iniciar sesión</div>
+        <div class="step-subtitle" data-i18n="s9.sub">La primera vez te va a pedir que te autentiques con tu cuenta de Anthropic</div>
       </div>
       <div class="step-toggle">▾</div>
     </div>
     <div class="step-body">
-      <div class="step-body-inner">
+      <div class="step-body-inner" data-i18n="s9.body">
         <p>En Git Bash, escribí simplemente:</p>
         <div class="code-block">
           <pre><span class="cmd">claude</span></pre>
@@ -1749,103 +1815,103 @@
 
   <!-- ── SOLUCIÓN DE PROBLEMAS ───────────────────────────────────────────── -->
   <div class="part-header" id="sec-problemas" style="margin-top:52px;">
-    <span class="part-badge red-badge">Problemas frecuentes</span>
-    <span class="part-title">¿Algo no funciona?</span>
+    <span class="part-badge red-badge" data-i18n="pt.badge">Problemas frecuentes</span>
+    <span class="part-title" data-i18n="pt.title">¿Algo no funciona?</span>
     <div class="part-divider"></div>
   </div>
 
   <table class="trouble-table">
     <thead>
       <tr>
-        <th>Mensaje de error</th>
-        <th>Causa probable</th>
-        <th>Solución</th>
+        <th data-i18n="tt.h1">Mensaje de error</th>
+        <th data-i18n="tt.h2">Causa probable</th>
+        <th data-i18n="tt.h3">Solución</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td data-label="Error">node no se reconoce en PowerShell</td>
-        <td data-label="Causa">PATH no fue actualizado</td>
-        <td data-label="Solución">Cerrá y volvé a abrir PowerShell, a veces es necesario cerrarlo desde el administrador de tareas o reiniciar e equipo</td>
+        <td data-label="Error" data-i18n="tt.r1c1">node no se reconoce en PowerShell</td>
+        <td data-label="Causa" data-i18n="tt.r1c2">PATH no fue actualizado</td>
+        <td data-label="Solución" data-i18n="tt.r1c3">Cerrá y volvé a abrir PowerShell, a veces es necesario cerrarlo desde el administrador de tareas o reiniciar e equipo</td>
       </tr>
       <tr>
-        <td data-label="Error">source: filename argument required</td>
-        <td data-label="Causa">Encoding incorrecto del <code>.bashrc</code></td>
-        <td data-label="Solución">Usá <code>printf</code> en lugar de <code>echo</code> para crear el archivo</td>
+        <td data-label="Error" data-i18n="tt.r2c1">source: filename argument required</td>
+        <td data-label="Causa" data-i18n="tt.r2c2">Encoding incorrecto del <code>.bashrc</code></td>
+        <td data-label="Solución" data-i18n="tt.r2c3">Usá <code>printf</code> en lugar de <code>echo</code> para crear el archivo</td>
       </tr>
       <tr>
-        <td data-label="Error">Comandos se ejecutan como uno solo</td>
-        <td data-label="Causa">Modo de pegado de Git Bash</td>
-        <td data-label="Solución">Pegá los comandos de a uno y presioná Enter entre cada uno</td>
+        <td data-label="Error" data-i18n="tt.r3c1">Comandos se ejecutan como uno solo</td>
+        <td data-label="Causa" data-i18n="tt.r3c2">Modo de pegado de Git Bash</td>
+        <td data-label="Solución" data-i18n="tt.r3c3">Pegá los comandos de a uno y presioná Enter entre cada uno</td>
       </tr>
       <tr>
-        <td data-label="Error">npm install falla con error de permisos</td>
-        <td data-label="Causa">Carpeta protegida</td>
-        <td data-label="Solución">Asegurate de instalar en tu carpeta de usuario, no en <code>C:\Program Files</code></td>
+        <td data-label="Error" data-i18n="tt.r4c1">npm install falla con error de permisos</td>
+        <td data-label="Causa" data-i18n="tt.r4c2">Carpeta protegida</td>
+        <td data-label="Solución" data-i18n="tt.r4c3">Asegurate de instalar en tu carpeta de usuario, no en <code>C:\Program Files</code></td>
       </tr>
       <tr>
-        <td data-label="Error">claude no se reconoce después de instalar</td>
-        <td data-label="Causa">PATH no incluye la carpeta de npm</td>
-        <td data-label="Solución">Agregá <code>C:\Users\TU_USUARIO\AppData\Roaming\npm</code> al PATH de usuario (Paso 6)</td>
+        <td data-label="Error" data-i18n="tt.r5c1">claude no se reconoce después de instalar</td>
+        <td data-label="Causa" data-i18n="tt.r5c2">PATH no incluye la carpeta de npm</td>
+        <td data-label="Solución" data-i18n="tt.r5c3">Agregá <code>C:\Users\TU_USUARIO\AppData\Roaming\npm</code> al PATH de usuario (Paso 6)</td>
       </tr>
     </tbody>
   </table>
 
   <!-- ── RESUMEN DE VARIABLES DE ENTORNO ─────────────────────────────────── -->
   <div class="part-header" style="margin-top:52px;" id="variables-de-entorno">
-    <span class="part-badge">Referencia</span>
-    <span class="part-title">Todas las variables de entorno que tenés que configurar</span>
+    <span class="part-badge" data-i18n="pe.badge">Referencia</span>
+    <span class="part-title" data-i18n="pe.title">Todas las variables de entorno que tenés que configurar</span>
     <div class="part-divider"></div>
   </div>
 
-  <p class="part-intro">
+  <p class="part-intro" data-i18n="pe.intro">
     Este cuadro resume <strong>todas</strong> las variables y rutas que debés agregar en
     <em>"Editar las variables de entorno de esta cuenta"</em> antes de usar Claude Code.
     Reemplazá <code>TU_USUARIO</code> por tu nombre de usuario real de Windows en cada ruta.
   </p>
 
-  <p style="font-size:14px; color:var(--gray-700); margin-bottom:4px;">Para abrir el editor de variables, buscá en Windows:</p>
+  <p style="font-size:14px; color:var(--gray-700); margin-bottom:4px;" data-i18n="pe.searchlabel">Para abrir el editor de variables, buscá en Windows:</p>
 
   <!-- Mockup buscador de Windows -->
   <div class="win-search">
     <div class="win-search-bar">
       <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><circle cx="7" cy="7" r="5" stroke="currentColor" stroke-width="1.5"/><path d="M11 11l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
-      <span>variables de entorno</span>
+      <span data-i18n="ws.search">variables de entorno</span>
     </div>
     <div class="win-search-tabs">
-      <div class="win-search-tab active">Todo</div>
-      <div class="win-search-tab">Aplicaciones</div>
-      <div class="win-search-tab">Configuración</div>
-      <div class="win-search-tab">Documentos</div>
+      <div class="win-search-tab active" data-i18n="ws.t1">Todo</div>
+      <div class="win-search-tab" data-i18n="ws.t2">Aplicaciones</div>
+      <div class="win-search-tab" data-i18n="ws.t3">Configuración</div>
+      <div class="win-search-tab" data-i18n="ws.t4">Documentos</div>
     </div>
-    <div class="win-search-label">Mejor coincidencia</div>
+    <div class="win-search-label" data-i18n="ws.best">Mejor coincidencia</div>
     <div class="win-search-result highlighted">
       <div class="win-search-icon env">
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 4h10v8H3V4z" stroke="#fff" stroke-width="1.2"/><path d="M6 7l2 2 4-4" stroke="#fff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </div>
       <div class="win-search-text">
-        <div class="title">Editar las variables de entorno de esta cu...</div>
-        <div class="subtitle">Panel de control</div>
+        <div class="title" data-i18n="ws.r1">Editar las variables de entorno de esta cu...</div>
+        <div class="subtitle" data-i18n="ws.r1sub">Panel de control</div>
       </div>
     </div>
     <div class="win-search-pointer">
-      <span>&#x2191; Elegí esta opción</span>
+      <span data-i18n="ws.ptr">&#x2191; Elegí esta opción</span>
     </div>
-    <div class="win-search-label" style="padding-top:4px;">Configuración</div>
+    <div class="win-search-label" style="padding-top:4px;" data-i18n="ws.config">Configuración</div>
     <div class="win-search-result">
       <div class="win-search-icon sys">
         <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="9" rx="1.5" stroke="#999" stroke-width="1.2"/><path d="M4 13h6" stroke="#999" stroke-width="1.2" stroke-linecap="round"/></svg>
       </div>
       <div class="win-search-text">
-        <div class="title" style="color:#999;">Editar las variables de entorno del sistema</div>
-        <div class="subtitle">Configuración</div>
+        <div class="title" style="color:#999;" data-i18n="ws.r2">Editar las variables de entorno del sistema</div>
+        <div class="subtitle" data-i18n="ws.r2sub">Configuración</div>
       </div>
     </div>
   </div>
 
   <div class="callout warning" style="margin-bottom:28px;">
     <span class="callout-icon">⚠️</span>
-    <div class="callout-body">
+    <div class="callout-body" data-i18n="pe.warn">
       <strong>Ojo con la opción que elegís</strong>
       Seleccioná la que dice <strong>"de esta cuenta"</strong> (Panel de control). La opción <em>"del sistema"</em> requiere permisos de administrador y no te va a dejar hacer cambios.
     </div>
@@ -1854,67 +1920,67 @@
   <table class="trouble-table">
     <thead>
       <tr>
-        <th>Variable</th>
-        <th>Ruta a agregar</th>
-        <th>Para qué sirve</th>
-        <th>Paso de la guía</th>
+        <th data-i18n="et.h1">Variable</th>
+        <th data-i18n="et.h2">Ruta a agregar</th>
+        <th data-i18n="et.h3">Para qué sirve</th>
+        <th data-i18n="et.h4">Paso de la guía</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td style="color:var(--teal);" data-label="Variable">Path</td>
-        <td data-label="Ruta">C:\Users\TU_USUARIO\tools\nodejs</td>
-        <td data-label="Para qué sirve">Permite que Windows encuentre los comandos <code>node</code> y <code>npm</code></td>
-        <td data-label="Paso">Paso 3</td>
+        <td style="color:var(--teal);" data-label="Variable" data-i18n="et.r1c1">Path</td>
+        <td data-label="Ruta" data-i18n="et.r1c2">C:\Users\TU_USUARIO\tools\nodejs</td>
+        <td data-label="Para qué sirve" data-i18n="et.r1c3">Permite que Windows encuentre los comandos <code>node</code> y <code>npm</code></td>
+        <td data-label="Paso" data-i18n="et.r1c4">Paso 3</td>
       </tr>
       <tr>
-        <td style="color:var(--teal);" data-label="Variable">Path</td>
-        <td data-label="Ruta">C:\Users\TU_USUARIO\AppData\Roaming\npm</td>
-        <td data-label="Para qué sirve">Permite encontrar programas instalados con <code>npm install -g</code>, incluyendo Claude Code</td>
-        <td data-label="Paso">Paso 6</td>
+        <td style="color:var(--teal);" data-label="Variable" data-i18n="et.r2c1">Path</td>
+        <td data-label="Ruta" data-i18n="et.r2c2">C:\Users\TU_USUARIO\AppData\Roaming\npm</td>
+        <td data-label="Para qué sirve" data-i18n="et.r2c3">Permite encontrar programas instalados con <code>npm install -g</code>, incluyendo Claude Code</td>
+        <td data-label="Paso" data-i18n="et.r2c4">Paso 6</td>
       </tr>
       <tr>
-        <td style="color:var(--teal);" data-label="Variable">Path</td>
-        <td data-label="Ruta">C:\Users\TU_USUARIO\.claude\bin</td>
-        <td data-label="Para qué sirve">Carpeta propia de Claude Code para sus binarios</td>
-        <td data-label="Paso">Paso 6</td>
+        <td style="color:var(--teal);" data-label="Variable" data-i18n="et.r3c1">Path</td>
+        <td data-label="Ruta" data-i18n="et.r3c2">C:\Users\TU_USUARIO\.claude\bin</td>
+        <td data-label="Para qué sirve" data-i18n="et.r3c3">Carpeta propia de Claude Code para sus binarios</td>
+        <td data-label="Paso" data-i18n="et.r3c4">Paso 6</td>
       </tr>
       <tr>
-        <td style="color:var(--teal);" data-label="Variable">Path</td>
-        <td data-label="Ruta">C:\Users\TU_USUARIO\.claude</td>
-        <td data-label="Para qué sirve">Carpeta raíz de configuración de Claude Code</td>
-        <td data-label="Paso">Paso PS</td>
+        <td style="color:var(--teal);" data-label="Variable" data-i18n="et.r4c1">Path</td>
+        <td data-label="Ruta" data-i18n="et.r4c2">C:\Users\TU_USUARIO\.claude</td>
+        <td data-label="Para qué sirve" data-i18n="et.r4c3">Carpeta raíz de configuración de Claude Code</td>
+        <td data-label="Paso" data-i18n="et.r4c4">Paso PS</td>
       </tr>
       <tr>
-        <td style="color:var(--teal);" data-label="Variable">Path</td>
-        <td data-label="Ruta">C:\Users\TU_USUARIO\.local\bin</td>
-        <td data-label="Para qué sirve">Carpeta auxiliar usada por el instalador de Claude Code</td>
-        <td data-label="Paso">Paso PS</td>
+        <td style="color:var(--teal);" data-label="Variable" data-i18n="et.r5c1">Path</td>
+        <td data-label="Ruta" data-i18n="et.r5c2">C:\Users\TU_USUARIO\.local\bin</td>
+        <td data-label="Para qué sirve" data-i18n="et.r5c3">Carpeta auxiliar usada por el instalador de Claude Code</td>
+        <td data-label="Paso" data-i18n="et.r5c4">Paso PS</td>
       </tr>
       <tr>
-        <td style="color:var(--teal);" data-label="Variable">Path</td>
-        <td data-label="Ruta">C:\Users\TU_USUARIO\AppData\Local\Programs\Python\Python313</td>
-        <td data-label="Para qué sirve">Permite que Windows encuentre el comando <code>python</code></td>
-        <td data-label="Paso">Paso PS</td>
+        <td style="color:var(--teal);" data-label="Variable" data-i18n="et.r6c1">Path</td>
+        <td data-label="Ruta" data-i18n="et.r6c2">C:\Users\TU_USUARIO\AppData\Local\Programs\Python\Python313</td>
+        <td data-label="Para qué sirve" data-i18n="et.r6c3">Permite que Windows encuentre el comando <code>python</code></td>
+        <td data-label="Paso" data-i18n="et.r6c4">Paso PS</td>
       </tr>
       <tr>
-        <td style="color:var(--teal);" data-label="Variable">Path</td>
-        <td data-label="Ruta">C:\Users\TU_USUARIO\AppData\Local\Programs\Python\Python313\Scripts</td>
-        <td data-label="Para qué sirve">Permite encontrar programas instalados con <code>pip</code></td>
-        <td data-label="Paso">Paso PS</td>
+        <td style="color:var(--teal);" data-label="Variable" data-i18n="et.r7c1">Path</td>
+        <td data-label="Ruta" data-i18n="et.r7c2">C:\Users\TU_USUARIO\AppData\Local\Programs\Python\Python313\Scripts</td>
+        <td data-label="Para qué sirve" data-i18n="et.r7c3">Permite encontrar programas instalados con <code>pip</code></td>
+        <td data-label="Paso" data-i18n="et.r7c4">Paso PS</td>
       </tr>
       <tr>
-        <td style="color:var(--teal);" data-label="Variable">CLAUDE_CODE_GIT_BASH_PATH</td>
-        <td data-label="Ruta">C:\Users\TU_USUARIO\AppData\Local\Programs\Git\bin</td>
-        <td data-label="Para qué sirve">Le indica a Claude Code dónde está instalado Git Bash</td>
-        <td data-label="Paso">Paso PS</td>
+        <td style="color:var(--teal);" data-label="Variable" data-i18n="et.r8c1">CLAUDE_CODE_GIT_BASH_PATH</td>
+        <td data-label="Ruta" data-i18n="et.r8c2">C:\Users\TU_USUARIO\AppData\Local\Programs\Git\bin</td>
+        <td data-label="Para qué sirve" data-i18n="et.r8c3">Le indica a Claude Code dónde está instalado Git Bash</td>
+        <td data-label="Paso" data-i18n="et.r8c4">Paso PS</td>
       </tr>
     </tbody>
   </table>
 
   <div class="callout tip" style="margin-top:20px;">
     <span class="callout-icon">💡</span>
-    <div class="callout-body">
+    <div class="callout-body" data-i18n="pe.tip">
       <strong>¿Cómo agregar todas estas rutas?</strong>
       Podés hacerlo de dos formas: manualmente desde el menú de Windows (buscá <em>"Editar las variables de entorno de esta cuenta"</em>
       y editá <code>Path</code> para agregar cada ruta), o automáticamente ejecutando los comandos del <strong>Paso PS</strong> en PowerShell.
@@ -1925,8 +1991,8 @@
 
   <!-- ── REFERENCIA RÁPIDA ───────────────────────────────────────────────── -->
   <div class="quick-ref">
-    <div class="quick-ref-title">Referencia rápida — todos los comandos</div>
-    <pre><span class="comment"># 1. Configurar PATH en Git Bash (usar printf, no echo)</span>
+    <div class="quick-ref-title" data-i18n="qr.title">Referencia rápida — todos los comandos</div>
+    <pre data-i18n="qr.pre"><span class="comment"># 1. Configurar PATH en Git Bash (usar printf, no echo)</span>
 <span class="cmd">printf 'export PATH="/c/Users/TU_USUARIO/tools/nodejs:$PATH"\n' > ~/.bashrc</span>
 
 <span class="comment"># 2. Aplicar cambios en la sesión actual</span>
@@ -1953,8 +2019,8 @@
 </main>
 
 <footer class="footer">
-  Guía generada a partir de una instalación real en entorno corporativo con restricciones de administrador — Windows 11, Git Bash
-  <div class="footer-credit">
+  <span data-i18n="ft.text">Guía generada a partir de una instalación real en entorno corporativo con restricciones de administrador — Windows 11, Git Bash</span>
+  <div class="footer-credit" data-i18n="ft.credit">
     Creado por Carlos Patricio Gonzalez Guerrico
   </div>
   <div class="footer-socials">
@@ -2058,6 +2124,257 @@
       });
     });
   });
+
+  // ── Language toggle ──
+  let currentLang = 'es';
+  const originalTexts = {};
+
+  const en = {
+    // Header
+    'h.eyebrow': 'Installation guide &middot; Windows without admin permissions',
+    'h.title': 'How to install Claude Code on a corporate Windows computer',
+    'h.sub': 'Follow this step-by-step guide. No admin permissions or prior technical experience needed.',
+    'chip.1': 'Internet access',
+    'chip.2': 'Windows 10 / 11',
+    'chip.3': '~20 minutes',
+    'chip.4': 'No technical experience',
+
+    // Nav
+    'nav.1': 'Prerequisites',
+    'nav.2': 'Node.js',
+    'nav.3': 'Git Bash',
+    'nav.4': 'Claude Code',
+    'nav.5': 'First use',
+    'nav.6': 'Troubleshoot',
+    'nav.7': 'Variables',
+
+    // Author
+    'auth.bio': 'Engineer specialized in <span class="hl">automation and data analysis</span> with 4+ years of fintech experience. Specialized in <span class="hl">SQL</span> (BigQuery, Redshift), <span class="hl">Python</span> (process automation, data analysis, AI tools), <span class="hl">JavaScript</span> and workflow orchestration (n8n, Airflow, AWS). I build automated pipelines, BI dashboards, and internal tools powered by <span class="hl">AI</span>. <span class="hl">Industrial Engineer</span> with experience in process optimization (DMAIC), cohort analysis, KPIs (MAUs, TPV) and data-driven decision making in high-growth environments.',
+
+    // Doc callout
+    'doc.title': 'Having trouble? Check the official Anthropic documentation',
+    'doc.body': 'Anthropic has an official troubleshooting guide with solutions for the most common installation errors.',
+
+    // Part headers
+    'p0.badge': 'Before you start',
+    'p0.title': 'Download these tools first',
+    'p1.badge': 'Part 1',
+    'p1.title': 'Install Node.js without admin permissions',
+    'p2.badge': 'Part 2',
+    'p2.title': 'Configure Git Bash',
+    'p3.badge': 'Part 3',
+    'p3.title': 'Install Claude Code',
+    'p4.badge': 'Part 4',
+    'p4.title': 'Use Claude Code for the first time',
+    'pt.badge': 'Common problems',
+    'pt.title': 'Something not working?',
+    'pe.badge': 'Reference',
+    'pe.title': 'All the environment variables you need to configure',
+
+    // Part intros
+    'p1.intro': 'Node.js is the engine Claude Code needs to run. Since you can\'t use the regular installer, we\'ll use the portable version: a ZIP that requires no installation.',
+    'p2.intro': 'Git Bash is the console we\'ll use to install Claude. It needs to know where to find Node.js.',
+    'pe.intro': 'This table summarizes <strong>all</strong> the variables and paths you need to add in <em>"Edit environment variables for your account"</em> before using Claude Code. Replace <code>YOUR_USER</code> with your actual Windows username in each path.',
+    'pe.searchlabel': 'To open the variables editor, search in Windows:',
+
+    // Step titles and subtitles
+    's0.title': 'Required tools',
+    's0.sub': 'Three free programs you need installed before you begin',
+    's1.title': 'Download Node.js as a ZIP file',
+    's1.sub': 'Look for the .zip file \u2014 NOT the .msi installer',
+    's2.title': 'Extract the ZIP to your user folder',
+    's2.sub': 'Create the folder structure and extract the file',
+    's3.title': 'Add Node.js to your user PATH',
+    's3.sub': 'PATH is the list of paths Windows checks when you type a command',
+    's4.title': 'Open Git Bash and configure PATH',
+    's4.sub': 'Tell Git Bash where to find Node.js',
+    's5.title': 'Install Claude Code with npm',
+    's5.sub': 'One command \u2014 it may take several minutes',
+    's6.title': 'Add Claude to your Windows user PATH',
+    's6.sub': 'Tell Windows where to find the <code>claude</code> command',
+    'sps.title': 'Extra step for Windows: configure environment variables from PowerShell',
+    'sps.sub': 'Alternative to the manual method \u2014 run these commands in PowerShell, one at a time',
+    's7.title': 'Add the npm PATH in Git Bash too',
+    's7.sub': 'So the console can find the <code>claude</code> command',
+    's8.title': 'Verify everything works',
+    's8.sub': 'If you see the version, the installation was successful',
+    's9.title': 'Log in',
+    's9.sub': 'The first time it will ask you to authenticate with your Anthropic account',
+
+    // Step bodies
+    's0.body': '<p>Install these three tools before continuing. Click each link to go to the official download page:</p>\n<ul>\n  <li>\n    <strong>Git Bash</strong> \u2014 <a href="https://git-scm.com/download/win" target="_blank">git-scm.com/download/win</a><br>\n    This is the command-line console we\'ll use throughout the installation. Follow\n    <a href="https://www.youtube.com/watch?v=CaHTlfHWd8U" target="_blank">this setup video</a>\n    to make sure it\'s properly configured.\n  </li>\n  <li>\n    <strong>Visual Studio Code (VSCode)</strong> \u2014 <a href="https://code.visualstudio.com/" target="_blank">code.visualstudio.com</a><br>\n    Text and code editor. This is the program where you\'ll use Claude Code once it\'s installed.\n  </li>\n  <li>\n    <strong>Python</strong> \u2014 <a href="https://www.python.org/downloads/" target="_blank">python.org/downloads</a><br>\n    Download the latest version. <strong>Important:</strong> Don\'t download the "Python install manager", download the "Latest Python 3 release" file. Also, during installation, check the box\n    <em>"Add Python to PATH"</em> before clicking "Install Now".\n  </li>\n</ul>\n<div class="callout tip">\n  <span class="callout-icon">\uD83D\uDCA1</span>\n  <div class="callout-body">\n    <strong>None of this requires admin permissions?</strong>\n    VSCode and Git Bash have "current user only" installation options that don\'t require a password.\n    Python also works without admin if you choose the per-user installation option.\n  </div>\n</div>',
+
+    's1.body': '<ol class="substeps">\n  <li>Open your browser and go to <a href="https://nodejs.org/en/download" target="_blank">nodejs.org/en/download</a></li>\n  <li>Find the download section for <strong>Windows</strong></li>\n  <li>\n    Download the file with the <code>.zip</code> extension. The name will be something like:\n    <div class="code-block" style="margin-top:10px;">\n      <pre><span class="cmd">node-v22.x.x-win-x64.zip</span></pre>\n    </div>\n  </li>\n</ol>\n<div class="callout warning">\n  <span class="callout-icon">\u26A0\uFE0F</span>\n  <div class="callout-body">\n    <strong>Don\'t download the .msi</strong>\n    If you see two options for Windows, always choose the <code>.zip</code>.\n    The <code>.msi</code> installer will ask for an admin password and won\'t work.\n  </div>\n</div>',
+
+    's2.body': '<ol class="substeps">\n  <li>Open <strong>Windows Explorer</strong></li>\n  <li>Navigate to <code>C:\\Users\\YOUR_USER\\</code> (replace <code>YOUR_USER</code> with your actual username)</li>\n  <li>Create a new folder called <code>tools</code></li>\n  <li>Inside <code>tools</code>, create another folder called <code>nodejs</code></li>\n  <li>Extract <strong>all the contents</strong> of the ZIP into <code>C:\\Users\\YOUR_USER\\tools\\nodejs</code></li>\n</ol>\n<div class="verify-box">\n  <span class="v-icon">\u2705</span>\n  <div class="v-body">\n    <strong>How to know you did it right?</strong>\n    Inside the <code>nodejs</code> folder you should see the <code>node.exe</code> file. If you see it, you\'re on track.\n  </div>\n</div>',
+
+    's3.body': '<div class="callout info">\n  <span class="callout-icon">\u2139\uFE0F</span>\n  <div class="callout-body">\n    <strong>What is PATH?</strong>\n    When you type a command like <code>node</code> in the console, Windows searches a list of\n    folders called PATH. If Node.js isn\'t there, the system won\'t find it.\n    We\'ll edit it <strong>only for your account</strong> \u2014 this doesn\'t require admin permissions.\n    You can also follow <a href="https://www.youtube.com/watch?v=CaHTlfHWd8U" target="_blank">this reference video</a>.\n  </div>\n</div>\n<ol class="substeps">\n  <li>Open the <strong>Windows search</strong> (the magnifying glass in the taskbar or press the <strong>Windows</strong> key)</li>\n  <li>Type <strong>"environment variables"</strong> and select <strong>"Edit environment variables for your account"</strong>\n    <div class="callout warning" style="margin-top:10px; margin-bottom:0;">\n      <span class="callout-icon">\u26A0\uFE0F</span>\n      <div class="callout-body">\n        <strong>Watch out \u2014 there are two similar options</strong>\n        Choose the one that says <strong>"for your account"</strong>, NOT the one that says "system".\n        The system option requires admin permissions.\n      </div>\n    </div>\n  </li>\n  <li>A window opens with two sections. Work <strong>only in the top section</strong> that says <em>"User variables"</em>. Never touch the bottom section ("System variables").</li>\n  <li>Find the variable called <code>Path</code> in the top section and <strong>double-click</strong> on it</li>\n  <li>Click <strong>"New"</strong> and type the full path:\n    <div class="code-block" style="margin-top:10px;">\n      <pre><span class="cmd">C:\\Users\\YOUR_USER\\tools\\nodejs</span></pre>\n    </div>\n  </li>\n  <li>Click <strong>OK</strong> on all windows to save</li>\n</ol>\n<div class="verify-box">\n  <span class="v-icon">\u2705</span>\n  <div class="v-body">\n    <strong>Verification</strong>\n    Close PowerShell if you had it open, reopen it and type:\n    <div class="code-block" style="margin-top:8px;">\n      <pre><span class="cmd">node --version</span></pre>\n    </div>\n    If you see a version number like <code>v22.x.x</code>, the step was successful.\n  </div>\n</div>\n<div class="callout info" style="margin-top:16px;">\n  <span class="callout-icon">\uD83D\uDCCB</span>\n  <div class="callout-body">\n    If you want to configure all environment variables at once,\n    <a href="#variables-de-entorno">check the complete variables and paths table</a>\n    at the end of this guide.\n  </div>\n</div>',
+
+    's4.body': '<ol class="substeps">\n  <li>Search for <strong>Git Bash</strong> in the start menu and open it</li>\n  <li>\n    Paste this command (replace <code>YOUR_USER</code> with your actual username before pasting):\n    <div class="code-block" style="margin-top:10px;">\n      <div class="code-label">Command 1 of 2 \u2014 run first</div>\n      <pre><span class="cmd">printf \'export PATH="/c/Users/YOUR_USER/tools/nodejs:$PATH"\\n\' &gt; ~/.bashrc</span></pre>\n    </div>\n  </li>\n  <li>\n    Press <strong>Enter</strong>, wait for it to finish, and only then paste this second one:\n    <div class="code-block" style="margin-top:10px;">\n      <div class="code-label">Command 2 of 2 \u2014 run after</div>\n      <pre><span class="cmd">source ~/.bashrc</span></pre>\n    </div>\n  </li>\n  <li>\n    Verify it worked:\n    <div class="code-block" style="margin-top:10px;">\n      <pre><span class="cmd">node --version</span>\n<span class="cmd">npm --version</span></pre>\n    </div>\n    Both should show version numbers.\n  </li>\n</ol>\n<div class="callout warning">\n  <span class="callout-icon">\u26A0\uFE0F</span>\n  <div class="callout-body">\n    <strong>Paste commands one at a time</strong>\n    In Git Bash, if you paste multiple commands at once, it may interpret them as one and fail.\n    Paste one, press Enter, wait for it to finish, and only then paste the next one.\n  </div>\n</div>\n<div class="callout tip">\n  <span class="callout-icon">\uD83D\uDCA1</span>\n  <div class="callout-body">\n    <strong>If <code>source ~/.bashrc</code> fails with "command not found":</strong>\n    The file may have been saved with incorrect encoding. Re-run the first command\n    with <code>printf</code> (don\'t use <code>echo</code>) and then try <code>source</code> again.\n  </div>\n</div>',
+
+    's5.body': '<p>In Git Bash, run this command:</p>\n<div class="code-block">\n  <pre><span class="cmd">npm install -g @anthropic-ai/claude-code</span></pre>\n</div>\n<div class="callout info">\n  <span class="callout-icon">\u2139\uFE0F</span>\n  <div class="callout-body">\n    This may take <strong>several minutes</strong> depending on your internet connection.\n    You\'ll see text scrolling on the screen \u2014 that\'s normal. Let it finish without interrupting.\n  </div>\n</div>',
+
+    's6.body': '<ol class="substeps">\n  <li>Open the <strong>Windows search</strong> and search for <strong>"Edit environment variables for your account"</strong> (same as in Step 3)</li>\n  <li>Double-click the <code>Path</code> variable in the top section (<em>"User variables"</em>)</li>\n  <li>Click <strong>"New"</strong> and add this path:\n    <div class="code-block" style="margin-top:8px;">\n      <pre><span class="cmd">C:\\Users\\YOUR_USER\\AppData\\Roaming\\npm</span></pre>\n    </div>\n    <span style="font-size:12px; color:var(--gray-500);">This is the folder where npm saves programs you install with <code>npm install -g</code></span>\n  </li>\n  <li>Click <strong>"New"</strong> again and also add:\n    <div class="code-block" style="margin-top:8px;">\n      <pre><span class="cmd">C:\\Users\\YOUR_USER\\.claude\\bin</span></pre>\n    </div>\n    <span style="font-size:12px; color:var(--gray-500);">If this folder doesn\'t exist yet, add it anyway \u2014 it will be created during installation.</span>\n  </li>\n  <li>Click <strong>OK</strong> on all windows</li>\n</ol>\n<div class="callout info" style="margin-top:16px;">\n  <span class="callout-icon">\uD83D\uDCCB</span>\n  <div class="callout-body">\n    If you want to configure all environment variables at once,\n    <a href="#variables-de-entorno">check the complete variables and paths table</a>\n    at the end of this guide.\n  </div>\n</div>',
+
+    'sps.body': '<p>\n  If you had trouble with the manual method or prefer to do everything from the terminal,\n  you can use these PowerShell commands. Open <strong>PowerShell</strong> (not Git Bash)\n  and paste each line one at a time.\n</p>\n\n<div class="callout warning">\n  <span class="callout-icon">\u26A0\uFE0F</span>\n  <div class="callout-body">\n    <strong>Run one at a time</strong>\n    Copy and paste each command separately. Wait for each one to finish before continuing with the next.\n  </div>\n</div>\n\n<div class="code-block">\n  <div class="code-label">1 \u2014 Install Git (if you don\'t have it yet)</div>\n  <pre><span class="cmd">winget install --id Git.Git -e --source winget</span></pre>\n</div>\n\n<div class="code-block">\n  <div class="code-label">2 \u2014 Set Git Bash path for Claude (permanent)</div>\n  <pre><span class="cmd">setx CLAUDE_CODE_GIT_BASH_PATH "C:\\Users\\$ENV:USERNAME\\AppData\\Local\\Programs\\Git\\bin"</span></pre>\n</div>\n\n<div class="code-block">\n  <div class="code-label">3 \u2014 Set Git Bash path for Claude (current session)</div>\n  <pre><span class="cmd">$env:CLAUDE_CODE_GIT_BASH_PATH = "C:\\Users\\$ENV:USERNAME\\AppData\\Local\\Programs\\Git\\bin"</span></pre>\n</div>\n\n<div class="code-block">\n  <div class="code-label">4 \u2014 Install Claude Code via Anthropic\'s official script</div>\n  <pre><span class="cmd">irm https://claude.ai/install.ps1 | iex</span></pre>\n</div>\n\n<div class="code-block">\n  <div class="code-label">5 \u2014 Add .claude folder to PATH (permanent)</div>\n  <pre><span class="cmd">setx PATH "$env:PATH;C:\\Users\\$ENV:USERNAME\\.claude"</span></pre>\n</div>\n\n<div class="code-block">\n  <div class="code-label">6 \u2014 Add .claude folder to PATH (current session)</div>\n  <pre><span class="cmd">$env:PATH = "$env:PATH;C:\\Users\\$ENV:USERNAME\\.claude"</span></pre>\n</div>\n\n<div class="code-block">\n  <div class="code-label">7 \u2014 Add .local\\bin folder to PATH (permanent)</div>\n  <pre><span class="cmd">setx PATH "$env:PATH;C:\\Users\\$ENV:USERNAME\\.local\\bin"</span></pre>\n</div>\n\n<div class="code-block">\n  <div class="code-label">8 \u2014 Add .local\\bin folder to PATH (current session)</div>\n  <pre><span class="cmd">$env:PATH = "$env:PATH;C:\\Users\\$ENV:USERNAME\\.local\\bin"</span></pre>\n</div>\n\n<div class="code-block">\n  <div class="code-label">9 \u2014 Add Python to PATH (permanent)</div>\n  <pre><span class="cmd">setx PATH "$env:PATH;C:\\Users\\$ENV:USERNAME\\AppData\\Local\\Programs\\Python\\Python313;C:\\Users\\$ENV:USERNAME\\AppData\\Local\\Programs\\Python\\Python313\\Scripts"</span></pre>\n</div>\n\n<div class="code-block">\n  <div class="code-label">10 \u2014 Add Python to PATH (current session)</div>\n  <pre><span class="cmd">$env:PATH = "$env:PATH;C:\\Users\\$ENV:USERNAME\\AppData\\Local\\Programs\\Python\\Python313;C:\\Users\\$ENV:USERNAME\\AppData\\Local\\Programs\\Python\\Python313\\Scripts"</span></pre>\n</div>\n\n<div class="callout warning" style="margin-top:12px;">\n  <span class="callout-icon">\u26A0\uFE0F</span>\n  <div class="callout-body">\n    <strong>Adjust the Python version number</strong>\n    The commands above use <code>Python313</code> (Python 3.13). If you installed a different version, replace <code>Python313</code> with the correct one (e.g., <code>Python312</code> for Python 3.12 or <code>Python314</code> for Python 3.14).\n    To check your version, open the folder <code>C:\\Users\\YOUR_USER\\AppData\\Local\\Programs\\Python\\</code> and see what the subfolder is named.\n  </div>\n</div>\n\n<div class="verify-box">\n  <span class="v-icon">\u2705</span>\n  <div class="v-body">\n    <strong>Close and reopen the terminal</strong>\n    Once all commands are executed, close PowerShell and reopen it so the PATH changes take effect.\n  </div>\n</div>\n\n<div class="callout tip">\n  <span class="callout-icon">\uD83D\uDCA1</span>\n  <div class="callout-body">\n    <strong>What\'s the difference between "permanent" and "current session" commands?</strong>\n    Commands with <code>setx</code> save the change permanently (for future sessions).\n    Commands with <code>$env:</code> only apply while the PowerShell window is open.\n    Running both ensures it works both now and the next time you open the terminal.\n  </div>\n</div>\n<div class="callout info" style="margin-top:16px;">\n  <span class="callout-icon">\uD83D\uDCCB</span>\n  <div class="callout-body">\n    If you want to see the complete list of all variables and paths configured in this step,\n    <a href="#variables-de-entorno">check the environment variables summary table</a>\n    at the end of this guide.\n  </div>\n</div>',
+
+    's7.body': '<p>In Git Bash, run these two commands (one at a time):</p>\n<div class="code-block">\n  <pre><span class="cmd">echo "export PATH=\\"$(npm config get prefix)/bin:\\$PATH\\"" &gt;&gt; ~/.bashrc</span>\n<span class="cmd">source ~/.bashrc</span></pre>\n</div>\n<div class="callout warning">\n  <span class="callout-icon">\u26A0\uFE0F</span>\n  <div class="callout-body">\n    Remember to run the two commands <strong>one at a time</strong>, waiting for each one to finish before entering the next.\n  </div>\n</div>',
+
+    's8.body': '<ol class="substeps">\n  <li>Close Git Bash</li>\n  <li>Reopen it</li>\n  <li>\n    Type:\n    <div class="code-block" style="margin-top:8px;">\n      <pre><span class="cmd">claude --version</span></pre>\n    </div>\n  </li>\n</ol>\n<div class="verify-box">\n  <span class="v-icon">\uD83C\uDF89</span>\n  <div class="v-body">\n    <strong>If you see a version number, the installation was successful!</strong>\n    You can now move on to the last step to log in.\n  </div>\n</div>',
+
+    's9.body': '<p>In Git Bash, simply type:</p>\n<div class="code-block">\n  <pre><span class="cmd">claude</span></pre>\n</div>\n<p>\n  The first time you run it, it will ask you to log in with your Anthropic account\n  (the same one you use on <a href="https://claude.ai" target="_blank">claude.ai</a>).\n  Follow the on-screen instructions.\n</p>\n<div class="callout success">\n  <span class="callout-icon">\u2705</span>\n  <div class="callout-body">\n    <strong>Done!</strong>\n    Once you\'ve logged in, Claude Code is up and running. You can open it from\n    Git Bash or from the VSCode extension.\n  </div>\n</div>',
+
+    // Troubleshoot table
+    'tt.h1': 'Error message',
+    'tt.h2': 'Probable cause',
+    'tt.h3': 'Solution',
+    'tt.r1c1': 'node is not recognized in PowerShell',
+    'tt.r1c2': 'PATH was not updated',
+    'tt.r1c3': 'Close and reopen PowerShell, sometimes you need to close it from Task Manager or restart the computer',
+    'tt.r2c1': 'source: filename argument required',
+    'tt.r2c2': 'Incorrect <code>.bashrc</code> encoding',
+    'tt.r2c3': 'Use <code>printf</code> instead of <code>echo</code> to create the file',
+    'tt.r3c1': 'Commands run as a single one',
+    'tt.r3c2': 'Git Bash paste mode',
+    'tt.r3c3': 'Paste commands one at a time and press Enter between each one',
+    'tt.r4c1': 'npm install fails with permission error',
+    'tt.r4c2': 'Protected folder',
+    'tt.r4c3': 'Make sure to install in your user folder, not in <code>C:\\\\Program Files</code>',
+    'tt.r5c1': 'claude is not recognized after installing',
+    'tt.r5c2': 'PATH doesn\'t include the npm folder',
+    'tt.r5c3': 'Add <code>C:\\\\Users\\\\YOUR_USER\\\\AppData\\\\Roaming\\\\npm</code> to user PATH (Step 6)',
+
+    // Env table
+    'et.h1': 'Variable',
+    'et.h2': 'Path to add',
+    'et.h3': 'What it does',
+    'et.h4': 'Guide step',
+    'et.r1c1': 'Path',
+    'et.r1c2': 'C:\\Users\\YOUR_USER\\tools\\nodejs',
+    'et.r1c3': 'Allows Windows to find <code>node</code> and <code>npm</code> commands',
+    'et.r1c4': 'Step 3',
+    'et.r2c1': 'Path',
+    'et.r2c2': 'C:\\Users\\YOUR_USER\\AppData\\Roaming\\npm',
+    'et.r2c3': 'Allows finding programs installed with <code>npm install -g</code>, including Claude Code',
+    'et.r2c4': 'Step 6',
+    'et.r3c1': 'Path',
+    'et.r3c2': 'C:\\Users\\YOUR_USER\\.claude\\bin',
+    'et.r3c3': 'Claude Code\'s own folder for its binaries',
+    'et.r3c4': 'Step 6',
+    'et.r4c1': 'Path',
+    'et.r4c2': 'C:\\Users\\YOUR_USER\\.claude',
+    'et.r4c3': 'Root configuration folder for Claude Code',
+    'et.r4c4': 'PS Step',
+    'et.r5c1': 'Path',
+    'et.r5c2': 'C:\\Users\\YOUR_USER\\.local\\bin',
+    'et.r5c3': 'Auxiliary folder used by Claude Code installer',
+    'et.r5c4': 'PS Step',
+    'et.r6c1': 'Path',
+    'et.r6c2': 'C:\\Users\\YOUR_USER\\AppData\\Local\\Programs\\Python\\Python313',
+    'et.r6c3': 'Allows Windows to find the <code>python</code> command',
+    'et.r6c4': 'PS Step',
+    'et.r7c1': 'Path',
+    'et.r7c2': 'C:\\Users\\YOUR_USER\\AppData\\Local\\Programs\\Python\\Python313\\Scripts',
+    'et.r7c3': 'Allows finding programs installed with <code>pip</code>',
+    'et.r7c4': 'PS Step',
+    'et.r8c1': 'CLAUDE_CODE_GIT_BASH_PATH',
+    'et.r8c2': 'C:\\Users\\YOUR_USER\\AppData\\Local\\Programs\\Git\\bin',
+    'et.r8c3': 'Tells Claude Code where Git Bash is installed',
+    'et.r8c4': 'PS Step',
+
+    // Env callouts
+    'pe.warn': '<strong>Watch out which option you choose</strong> Select the one that says <strong>"for your account"</strong> (Control Panel). The <em>"system"</em> option requires admin permissions and won\'t let you make changes.',
+    'pe.tip': '<strong>How to add all these paths?</strong> You can do it two ways: manually from the Windows menu (search for <em>"Edit environment variables for your account"</em> and edit <code>Path</code> to add each path), or automatically by running the commands from the <strong>PS Step</strong> in PowerShell. Both methods achieve the same thing. For the <code>CLAUDE_CODE_GIT_BASH_PATH</code> variable, use the <strong>"New"</strong> button in the user variables window to create it.',
+
+    // Win search mockup
+    'ws.t1': 'All',
+    'ws.t2': 'Apps',
+    'ws.t3': 'Settings',
+    'ws.t4': 'Documents',
+    'ws.best': 'Best match',
+    'ws.r1': 'Edit environment variables for your accou...',
+    'ws.r1sub': 'Control Panel',
+    'ws.ptr': '&#x2191; Choose this option',
+    'ws.config': 'Settings',
+    'ws.r2': 'Edit the system environment variables',
+    'ws.r2sub': 'Settings',
+    'ws.search': 'environment variables',
+
+    // Quick ref
+    'qr.title': 'Quick reference \u2014 all commands',
+    'qr.pre': '<span class="comment"># 1. Configure PATH in Git Bash (use printf, not echo)</span>\n<span class="cmd">printf \'export PATH="/c/Users/YOUR_USER/tools/nodejs:$PATH"\\n\' > ~/.bashrc</span>\n\n<span class="comment"># 2. Apply changes in current session</span>\n<span class="cmd">source ~/.bashrc</span>\n\n<span class="sep">\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500</span>\n\n<span class="comment"># 3. Install Claude Code</span>\n<span class="cmd">npm install -g @anthropic-ai/claude-code</span>\n\n<span class="comment"># 4. Add npm to PATH</span>\n<span class="cmd">echo "export PATH=\\"$(npm config get prefix)/bin:\\$PATH\\"" >> ~/.bashrc</span>\n<span class="cmd">source ~/.bashrc</span>\n\n<span class="sep">\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500</span>\n\n<span class="comment"># 5. Verify installation</span>\n<span class="cmd">claude --version</span>\n\n<span class="comment"># 6. Start Claude</span>\n<span class="cmd">claude</span>',
+
+    // Footer
+    'ft.text': 'Guide generated from a real installation in a corporate environment with admin restrictions \u2014 Windows 11, Git Bash',
+    'ft.credit': 'Created by Carlos Patricio Gonzalez Guerrico'
+  };
+
+  function setLang(lang) {
+    if (lang === currentLang) return;
+    currentLang = lang;
+
+    document.querySelectorAll('[data-i18n]').forEach(function(el) {
+      var key = el.getAttribute('data-i18n');
+      if (lang === 'en') {
+        if (!originalTexts[key]) originalTexts[key] = el.innerHTML;
+        if (en[key] !== undefined) el.innerHTML = en[key];
+      } else {
+        if (originalTexts[key] !== undefined) el.innerHTML = originalTexts[key];
+      }
+    });
+
+    document.documentElement.lang = lang;
+    document.title = lang === 'en'
+      ? 'Installation guide \u2014 Claude Code on Windows'
+      : 'Gu\u00EDa de instalaci\u00F3n \u2014 Claude Code en Windows';
+
+    // Update doc callout link
+    var docLink = document.querySelector('.callout.info a[href*="code.claude.com/docs"]');
+    if (docLink) {
+      if (lang === 'en') {
+        docLink.href = 'https://code.claude.com/docs/troubleshooting';
+        docLink.childNodes[0].textContent = 'code.claude.com/docs/troubleshooting';
+      } else {
+        docLink.href = 'https://code.claude.com/docs/es/troubleshooting';
+        docLink.childNodes[0].textContent = 'code.claude.com/docs/es/troubleshooting';
+      }
+    }
+
+    // Update toggle UI
+    document.getElementById('lang-es').classList.toggle('active', lang === 'es');
+    document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+    document.getElementById('lang-switch').classList.toggle('en', lang === 'en');
+
+    // Update data-label attributes on tables for mobile
+    document.querySelectorAll('[data-label]').forEach(function(td) {
+      var label = td.getAttribute('data-label');
+      var labelMap = {
+        'Error': 'Error',
+        'Causa': lang === 'en' ? 'Cause' : 'Causa',
+        'Soluci\u00F3n': lang === 'en' ? 'Solution' : 'Soluci\u00F3n',
+        'Variable': 'Variable',
+        'Ruta': lang === 'en' ? 'Path' : 'Ruta',
+        'Para qu\u00E9 sirve': lang === 'en' ? 'What it does' : 'Para qu\u00E9 sirve',
+        'Paso': lang === 'en' ? 'Step' : 'Paso',
+        'Cause': lang === 'en' ? 'Cause' : 'Causa',
+        'Solution': lang === 'en' ? 'Solution' : 'Soluci\u00F3n',
+        'Path': lang === 'en' ? 'Path' : 'Ruta',
+        'What it does': lang === 'en' ? 'What it does' : 'Para qu\u00E9 sirve',
+        'Step': lang === 'en' ? 'Step' : 'Paso'
+      };
+      if (labelMap[label]) td.setAttribute('data-label', labelMap[label]);
+    });
+
+    localStorage.setItem('guide-lang', lang);
+  }
+
+  function toggleLang() {
+    setLang(currentLang === 'es' ? 'en' : 'es');
+  }
+
+  // Restore saved language preference
+  var savedLang = localStorage.getItem('guide-lang');
+  if (savedLang === 'en') setLang('en');
 </script>
 
 </body>
